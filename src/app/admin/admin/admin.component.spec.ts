@@ -10,6 +10,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { AdminComponent } from './admin.component';
 import { AngularMaterialModule } from '../../angular-material.module';
+import {HeaderComponent} from '../header/header.component';
 
 Object.defineProperty(window, 'matchMedia', {
   value: jest.fn(() => ({ matches: true }))
@@ -96,7 +97,7 @@ describe('SideBarComponent on small devices', () => {
 
     // setup component
     TestBed.configureTestingModule({
-      declarations: [AdminComponent],
+      declarations: [AdminComponent, HeaderComponent],
       imports: [
         NoopAnimationsModule,
         AngularMaterialModule,
@@ -110,11 +111,10 @@ describe('SideBarComponent on small devices', () => {
 
     fixture = TestBed.createComponent(AdminComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
   it('should change menu orientation if screen size is small', () => {
     // assert
-    expect(component.position).toEqual('over');
+    expect(component.position).toEqual('side');
   });
 
   describe('menuClicked on a small screen device', () => {
