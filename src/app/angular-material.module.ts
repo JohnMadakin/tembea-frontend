@@ -6,7 +6,7 @@ import {
   MatMenuModule,
   MatSidenavModule,
   MatToolbarModule,
-  MatDialogModule
+  MatDialogModule, MatCardModule, MatButtonModule, MatTabsModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LogoutModalComponent } from './auth/logout-modal/logout-modal.component';
@@ -21,7 +21,10 @@ import { LogoutModalComponent } from './auth/logout-modal/logout-modal.component
     MatListModule,
     FlexLayoutModule,
     MatExpansionModule,
-    MatDialogModule
+    MatDialogModule,
+    MatCardModule,
+    MatButtonModule,
+    MatTabsModule
   ],
   exports: [
     MatToolbarModule,
@@ -32,6 +35,9 @@ import { LogoutModalComponent } from './auth/logout-modal/logout-modal.component
     FlexLayoutModule,
     MatExpansionModule,
     MatDialogModule,
+    MatCardModule,
+    MatButtonModule,
+    MatTabsModule
   ],
   declarations: [
     LogoutModalComponent

@@ -7,6 +7,7 @@ import { RoutesInventoryComponent } from './routes/routes-inventory/routes-inven
 import { TripsComponent } from './trips/trips.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AdminComponent } from './admin/admin.component';
+import {RouteRequestsComponent} from './routes/route-requests/route-requests.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent, canActivate: [] },
       { path: 'routes/create', component: CreateRouteComponent, canActivate: [] },
+      { path: 'routes/requests', component: RouteRequestsComponent, canActivate: [] },
       { path: 'routes/inventory', component: RoutesInventoryComponent, canActivate: [] },
       { path: 'trips/pending', component: TripsComponent, canActivate: [] },
       { path: 'trips/history', component: TripsComponent, canActivate: [] },

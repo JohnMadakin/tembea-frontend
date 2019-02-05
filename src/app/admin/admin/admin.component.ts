@@ -21,6 +21,7 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
     {
       name: 'Routes', iconActive: 'routes', iconInActive: 'routes-inactive', link: 'routes', pages: [
         { name: 'Create Route', link: 'routes/create', id: 'create-routes' },
+        { name: 'Requests', link: 'routes/requests', id: 'requests-routes' },
         { name: 'Inventory', link: 'routes/inventory', id: 'inventory-routes' }
       ]
     },

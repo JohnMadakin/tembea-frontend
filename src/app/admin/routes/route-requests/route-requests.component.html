@@ -1,0 +1,65 @@
+<div fxLayout="column">
+  <div fxlayout="row" class="notification-text" fxFlex="100%" fxLayoutAlign="start stretch">
+    Hi User, you have {{ routesRequests.length }} New Request{{ routesRequests.length > 1 ? 's' : '' }}
+  </div>
+</div>
+
+<div *ngIf="routesRequests.length > 0"
+     fxlayout="row wrap" fxLayout.xs="column"
+     fxLayout.sm="column" fxLayoutAlign="space-around start"
+     class="app-routes-container">
+
+  <div class="routes-grid" fxFlex="50%" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutAlign="space-evenly center">
+    <div *ngFor="let route of routesRequests; let idx = index"
+         [className]="activeRouteIndex === idx ? 'active route-box' : 'route-box'"
+         (click)="onClickRouteBox(idx, route)"
+         [style.background-image]="'url(assets/images/route-requests/route-card-' + (activeRouteIndex === idx ? 'active' : 'inactive') + '.png)'"
+         fxLayout="column"
+         fxLayoutAlign="space-evenly center">
+      <span class="route-name">{{ capitalizeWord(route.busStop.address) }}</span>
+      <span class="route-distance">{{ route.busStopDistance }}{{ route.busStopDistance ? 'km' : '' }}</span>
+    </div>
+  </div>
+
+  <div fxLayout="row wrap" fxFlex="50%" fxLayout.lt-md="column" fxLayoutAlign="center center" class="left-column">
+    <mat-card class="details-card">
+
+      <mat-card-content>
+        <mat-tab-group>
+          <mat-tab label="Request">
+            <img class="map-image"
+                 [src]="activeRouteRequest.routeImageUrl ||
+                  'https://via.placeholder.com/500?text=We could not load the map for this route'"
+                 [alt]="activeRouteRequest.distance" />
+          </mat-tab>
+          <mat-tab label="View Details">Content 2</mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+
+      <mat-card-footer>
+        <div class="footer-text">
+          <img matCardAvatar src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+          <span>Grace Samuel is requesting a route</span>
+        </div>
+        <mat-card-actions>
+          <button class="accept-button"><span class="accept">ACCEPT</span></button>
+          <button class="reject-button"><span class="reject">REJECT</span></button>
+        </mat-card-actions>
+      </mat-card-footer>
+
+    </mat-card>
+  </div>
+
+</div>
+
+<div *ngIf="routesRequests.length === 0"
+     fxFlexFill
+     fxLayoutAlign="space-evenly center"
+     class="no-route-requests andela-yellow-color">
+  You don't have any new route requests.
+</div>
+
+
+
+<div class="bottom-image"></div>
+
