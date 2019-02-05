@@ -1,10 +1,9 @@
-import {async, ComponentFixture, fakeAsync, flush, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
 
 import { RouteRequestsComponent } from './route-requests.component';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {AngularMaterialModule} from '../../../angular-material.module';
 import {RoutesService} from '../../__services__/routes.service';
-import {of} from 'rxjs';
 import getAllResponseMock from './__mocks__/get-all-response.mock';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {By} from '@angular/platform-browser';
@@ -13,10 +12,8 @@ import {EmptyPageComponent} from '../../empty-page/empty-page.component';
 describe('RouteRequestsComponent', () => {
   let component: RouteRequestsComponent;
   let fixture: ComponentFixture<RouteRequestsComponent>;
-
-  const MockRouteService = {
-    getAll: () => of(getAllResponseMock)
-  };
+  let httpMock: HttpTestingController;
+  let service: RoutesService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,38 +23,28 @@ describe('RouteRequestsComponent', () => {
         HttpClientTestingModule,
         AngularMaterialModule
       ],
-      providers: [{ provide: RoutesService, useValue: MockRouteService }]
     })
     .compileComponents();
-  }));
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(RouteRequestsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
+
+  beforeEach(inject([RoutesService, HttpTestingController], (_service, _httpMock) => {
+    service = _service;
+    httpMock = _httpMock;
+  }));
 
   it('should create RouteRequestsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('handleRoutes(): getAll(): should fetch all routes', fakeAsync(() => {
-    const service: RoutesService = TestBed.get(RoutesService);
-    component.routesRequests = [];
-
-    const spy = jest.spyOn(service, 'getAll');
-    jest.spyOn(component, 'handleRoutes');
-
-    expect(component.routesRequests.length).toEqual(0);
-    component.ngOnInit();
-    flush();
-
-    expect(spy).toHaveBeenCalled();
-    expect(component.handleRoutes).toHaveBeenCalled();
-    expect(component.routesRequests.length).toEqual(3);
-  }));
-
   it('Render Route Boxes: should render 3 route boxes with the first one active', () => {
+    const request = httpMock.expectOne(`${service.baseUrl}/requests`);
+    expect(request.request.method).toEqual('GET');
+    request.flush(getAllResponseMock);
+
+    fixture.detectChanges();
     const boxes = fixture.debugElement.queryAll(By.css('.route-box'));
 
     expect(boxes.length).toEqual(3);
@@ -69,6 +56,11 @@ describe('RouteRequestsComponent', () => {
   });
 
   it('onClickRouteBox(): should call onCLickRouterBox', () => {
+    const request = httpMock.expectOne(`${service.baseUrl}/requests`);
+    expect(request.request.method).toEqual('GET');
+    request.flush(getAllResponseMock);
+    fixture.detectChanges();
+
     const boxes = fixture.debugElement.queryAll(By.css('.route-box'));
     expect(boxes.length).toEqual(3);
     const secondBox = boxes[1];
@@ -81,9 +73,7 @@ describe('RouteRequestsComponent', () => {
     fixture.detectChanges();
     expect(component.onClickRouteBox).toHaveBeenCalledWith(1, getAllResponseMock.routes[1]);
 
-    expect(component.activeRouteIndex).toEqual(1);
     expect(Object.keys(boxes[1].properties)).toContain('className');
     expect(boxes[1].properties.className).toContain('active')
   });
-
 });

@@ -26,6 +26,7 @@
       }
       &.active {
         border: 1px solid #3359DB;
+        background-color: #4A82EB;
         .route-distance, .route-name {
           color: #FFFFFF;
         }
@@ -139,7 +140,7 @@
         }
         span{
           height: 21px;
-          width: 300px;
+          width: 100%;
           color: #4F4F4F;
           font-family: "DIN Pro", serif;
           font-size: 16px;
@@ -157,12 +158,14 @@
         position: absolute;
         display: flex;
         justify-content: space-evenly;
-        .reject-button {
+        button {
+          border: 0;
           height: 40px;
           width: 45%;
           border-radius: 5px;
+        }
+        .reject-button {
           background-color: #FFE5E6;
-          box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
           .reject {
             height: 20px;
             width: 128px;
@@ -175,11 +178,7 @@
           }
         }
         .accept-button {
-          height: 40px;
-          width: 45%;
-          border-radius: 5px;
           background-color: #E1E6FA;
-          box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
           .accept {
             height: 20px;
             width: 128px;

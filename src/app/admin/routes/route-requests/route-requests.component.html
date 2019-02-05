@@ -1,19 +1,19 @@
-<div fxLayout="column" *ngIf="routesRequests.length > 0">
+<div fxLayout="column" *ngIf="routes.length > 0">
   <div fxlayout="row" class="notification-text" fxFlex="100%" fxLayoutAlign="start stretch">
-    Hi User, you have {{ routesRequests.length }} New Request{{ routesRequests.length > 1 ? 's' : '' }}
+    Hi User, you have {{ routes.length }} New Request{{ routes.length > 1 ? 's' : '' }}
   </div>
 </div>
 
-<div *ngIf="routesRequests.length > 0"
+<div *ngIf="routes.length > 0"
      fxlayout="row wrap" fxLayout.xs="column"
      fxLayout.sm="column" fxLayoutAlign="space-around start"
      class="app-routes-container">
 
   <div class="routes-grid" fxFlex="50%" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutAlign="space-evenly center">
-    <div *ngFor="let route of routesRequests; let idx = index"
-         [className]="activeRouteIndex === idx ? 'active route-box' : 'route-box'"
+    <div *ngFor="let route of routes; let idx = index"
+         [className]="isRouteActive(idx) ? 'active route-box' : 'route-box'"
          (click)="onClickRouteBox(idx, route)"
-         [style.background-image]="'url(assets/images/route-requests/route-card-' + (activeRouteIndex === idx ? 'active' : 'inactive') + '.png)'"
+         [style.background-image]="'url(' + route.routeImageUrl + ')'"
          fxLayout="column"
          fxLayoutAlign="space-evenly center">
       <span class="route-name">{{ capitalizeWord(route.busStop.address) }}</span>
@@ -28,9 +28,9 @@
         <mat-tab-group>
           <mat-tab label="Request">
             <img class="map-image"
-                 [src]="activeRouteRequest.routeImageUrl ||
+                 [src]="getCurrentRoute().routeImageUrl ||
                   'https://via.placeholder.com/500?text=We could not load the map for this route'"
-                 [alt]="activeRouteRequest.distance" />
+                 [alt]="getCurrentRoute().distance" />
           </mat-tab>
           <mat-tab label="View Details">Content 2</mat-tab>
         </mat-tab-group>
@@ -39,7 +39,7 @@
       <mat-card-footer>
         <div class="footer-text">
           <img matCardAvatar src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-          <span>Grace Samuel is requesting a route</span>
+          <span>Grace Samuel is requesting a route - {{ getCurrentRoute().busStop.address }}</span>
         </div>
         <mat-card-actions>
           <button class="accept-button"><span class="accept">ACCEPT</span></button>
@@ -52,7 +52,7 @@
 
 </div>
 
-<app-empty-page *ngIf="routesRequests.length === 0" [text]="'No new route requests.'"></app-empty-page>
+<app-empty-page *ngIf="routes.length === 0" [text]="'No new route requests.'"></app-empty-page>
 
 
 <div class="bottom-image"></div>

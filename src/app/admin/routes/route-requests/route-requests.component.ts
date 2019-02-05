@@ -11,16 +11,17 @@ import {Subscription} from 'rxjs';
 export class RouteRequestsComponent implements OnInit, OnDestroy {
 
   routesSubscription: Subscription;
-  routesRequests: RouteModel[] = [];
-  activeRouteIndex = 0;
-  activeRouteRequest: RouteModel = new RouteModel();
+  routes: RouteModel[] = [];
 
   constructor(
-    private routeService: RoutesService
+    public routeService: RoutesService
   ) { }
 
   ngOnInit() {
-    this.routesSubscription = this.routeService.getAll().subscribe(this.handleRoutes);
+    this.routesSubscription = this.routeService.getAllRequests();
+    this.routeService.routesRequests.subscribe((val) => {
+      this.routes = val;
+    });
   }
 
   ngOnDestroy() {
@@ -37,13 +38,15 @@ export class RouteRequestsComponent implements OnInit, OnDestroy {
   };
 
   onClickRouteBox = (index, route: RouteModel) => {
-    this.activeRouteIndex = index;
-    this.activeRouteRequest = route;
+    RoutesService.activeRouteIndex = index;
+    RoutesService.activeRouteRequest = route;
   };
 
-  handleRoutes = (routesList: { routes: RouteModel[]}) => {
-    this.routesRequests = routesList.routes.map(value => new RouteModel().deserialize(value));
+  isRouteActive(idx: number): Boolean {
+    return RoutesService.activeRouteIndex === idx;
+  }
 
-    this.activeRouteRequest = this.routesRequests[this.activeRouteIndex] || new RouteModel();
-  };
+  getCurrentRoute(): RouteModel {
+    return RoutesService.activeRouteRequest;
+  }
 }

@@ -7,6 +7,7 @@ import getAllResponseMock from '../routes/route-requests/__mocks__/get-all-respo
 describe('RoutesService', () => {
   let service: RoutesService;
   let httpMock: HttpTestingController;
+  let routes = [];
 
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule],
@@ -16,6 +17,9 @@ describe('RoutesService', () => {
   beforeEach(inject([RoutesService, HttpTestingController], (_service, _httpMock) => {
     service = _service;
     httpMock = _httpMock;
+    service.routesRequests.subscribe(value => {
+      routes = value;
+    });
   }));
 
   afterEach(() => {
@@ -26,16 +30,16 @@ describe('RoutesService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('getAll(): should return all pending routes', (done) => {
-    service.getAll().subscribe(value => {
-      expect(value).toHaveProperty('routes');
-      expect(value.routes.length).toBe(3);
-      done()
-    });
+  it('getAllRequests(): should return all pending routes', (done) => {
+    expect(routes.length).toBe(0);
+    service.getAllRequests();
 
     const request = httpMock.expectOne(`${service.baseUrl}/requests`);
     expect(request.request.method).toEqual('GET');
 
     request.flush(getAllResponseMock);
+
+    expect(routes.length).toBe(3);
+    done();
   });
 });
