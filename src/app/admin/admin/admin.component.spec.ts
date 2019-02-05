@@ -13,9 +13,6 @@ import { AngularMaterialModule } from '../../angular-material.module';
 import { HeaderComponent } from '../header/header.component';
 import { NavMenuService } from '../__services__/nav-menu.service';
 
-Object.defineProperty(window, 'matchMedia', {
-  value: jest.fn(() => ({ matches: true }))
-});
 const sideNavMock = {
   setSidenav: jest.fn(),
   open: jest.fn(),

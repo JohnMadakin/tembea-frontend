@@ -1,4 +1,4 @@
-<div fxLayout="column">
+<div fxLayout="column" *ngIf="routesRequests.length > 0">
   <div fxlayout="row" class="notification-text" fxFlex="100%" fxLayoutAlign="start stretch">
     Hi User, you have {{ routesRequests.length }} New Request{{ routesRequests.length > 1 ? 's' : '' }}
   </div>
@@ -52,13 +52,7 @@
 
 </div>
 
-<div *ngIf="routesRequests.length === 0"
-     fxFlexFill
-     fxLayoutAlign="space-evenly center"
-     class="no-route-requests andela-yellow-color">
-  You don't have any new route requests.
-</div>
-
+<app-empty-page *ngIf="routesRequests.length === 0" [text]="'No new route requests.'"></app-empty-page>
 
 
 <div class="bottom-image"></div>

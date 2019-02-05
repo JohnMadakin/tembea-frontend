@@ -12,6 +12,7 @@ import { HeaderComponent } from './header/header.component';
 import { AdminComponent } from './admin/admin.component';
 import { AngularMaterialModule } from '../angular-material.module';
 import { RouteRequestsComponent } from './routes/route-requests/route-requests.component';
+import { EmptyPageComponent } from './empty-page/empty-page.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { RouteRequestsComponent } from './routes/route-requests/route-requests.c
     SettingsComponent,
     TripsComponent,
     HeaderComponent,
-    RouteRequestsComponent
+    RouteRequestsComponent,
+    EmptyPageComponent
   ],
   imports: [
     CommonModule,

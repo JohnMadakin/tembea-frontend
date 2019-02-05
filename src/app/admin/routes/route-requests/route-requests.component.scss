@@ -3,10 +3,6 @@
   padding-left: 4.5em;
 }
 
-.no-route-requests {
-  font-size: 48px;
-}
-
 .app-routes-container {
   z-index: 1;
   position: relative;
@@ -30,7 +26,6 @@
       }
       &.active {
         border: 1px solid #3359DB;
-        background-color: #4a82eb;
         .route-distance, .route-name {
           color: #FFFFFF;
         }
