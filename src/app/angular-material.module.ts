@@ -15,9 +15,14 @@ import {
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LogoutModalComponent } from './auth/logout-modal/logout-modal.component';
+import { RouteApproveDeclineModalComponent } from './admin/routes/route-approve-decline-modal/route-approve-decline-modal.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
+    CommonModule,
+    FormsModule,
     FlexLayoutModule,
     MatToolbarModule,
     MatSidenavModule,
@@ -48,6 +53,9 @@ import { LogoutModalComponent } from './auth/logout-modal/logout-modal.component
     MatBadgeModule,
     MatGridListModule
   ],
-  declarations: [LogoutModalComponent],
+  declarations: [
+    LogoutModalComponent,
+    RouteApproveDeclineModalComponent
+  ]
 })
 export class AngularMaterialModule {}

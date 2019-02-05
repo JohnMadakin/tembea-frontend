@@ -53,6 +53,9 @@
     "tslint": "~5.11.0",
     "typescript": "~3.1.1"
   },
+  "jest": {
+    "setupFiles": ["<rootDir>/src/app/__mocks__/match-media.mock.ts"]
+  },
   "commitplease": {
     "style": "angular",
     "types": [

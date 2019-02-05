@@ -21,6 +21,12 @@ const routes: Routes = [
         data: { title: 'Welcome' }
       },
       {
+        path: 'routes/requests',
+        component: RouteRequestsComponent,
+        canActivate: [],
+        data: { title: 'Create Route' }
+      },
+      {
         path: 'routes/create',
         component: CreateRouteComponent,
         canActivate: [],

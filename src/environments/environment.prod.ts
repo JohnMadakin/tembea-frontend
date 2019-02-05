@@ -3,4 +3,5 @@ export const environment = {
   tembeaBackEndUrl: '',
   tembeaFrontEndUrl: '',
   andelaAuthServiceUrl: 'https://api-prod.andela.com/login?redirect_url',
+  teamUrl: 'andela.slack.com'
 };
