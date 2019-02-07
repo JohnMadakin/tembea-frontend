@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { IUser } from 'src/app/shared/user.model';
 import { Subscription, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { TOASTR_TOKEN } from 'src/app/shared/toastr.service';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -32,13 +33,18 @@ describe('AuthService', () => {
     const mockRouter = {
       navigate: () => {}
     };
+    const mockToastr = {
+      success: () => {},
+      error: () => {}
+    }
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         { provide: CookieService, useValue: mockCookieService },
         { provide: ClockService, useValue: mockClockService },
-        { provide: Router, useValue: mockRouter }
+        { provide: Router, useValue: mockRouter },
+        { provide: TOASTR_TOKEN, useValue: mockToastr }
       ]
     });
 
@@ -84,7 +90,7 @@ describe('AuthService', () => {
     service.clockSubscription = new Subscription();
     jest.spyOn(service.cookieService, 'delete').mockImplementation(() => {});
     service.logout();
-    expect(service.cookieService.delete).toHaveBeenCalledTimes(1);
+    expect(service.cookieService.delete).toHaveBeenCalledTimes(2);
   });
 
   it('should init the clock', () => {
@@ -102,7 +108,7 @@ describe('AuthService', () => {
         expect(data).toEqual(response);
       });
 
-    const loginRequest: TestRequest = httpTestingController.expectOne(`${tembeaBackEndUrl}/api/v1/auth/login/verify`);
+    const loginRequest: TestRequest = httpTestingController.expectOne(`${tembeaBackEndUrl}/api/v1/auth/verify`);
 
     expect(loginRequest.request.method).toEqual('GET');
 

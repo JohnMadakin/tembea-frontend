@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -39,10 +39,7 @@ const toastr: Toastr = window['toastr'];
     ClockService,
     { provide: TOASTR_TOKEN, useValue: toastr }
   ],
-  entryComponents: [
-    UnauthorizedLoginComponent,
-    LogoutModalComponent
-  ],
-  bootstrap: [AppComponent],
+  entryComponents: [UnauthorizedLoginComponent, LogoutModalComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

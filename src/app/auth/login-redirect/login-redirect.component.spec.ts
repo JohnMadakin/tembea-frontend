@@ -25,13 +25,17 @@ describe('LoginRedirectComponent', () => {
       isAuthenticated: '',
       currentUser: {},
       login: (): Observable<any> => {
-        return of({ data: {
-          isAuthorized: true
-        }})
+        return of({
+          data: {
+            isAuthorized: true
+          }
+        });
       },
       setCurrentUser: (): void => {},
-      initClock: (): void => {}
-    }
+      initClock: (): void => {},
+      authorizeUser: (): void => {},
+      unAuthorizeUser: (): void => {}
+    };
 
     const mockRouter = {
       navigate: () => {}
