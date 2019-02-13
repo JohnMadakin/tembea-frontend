@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   static lastActiveTime: number;
-  authUrl = `${environment.tembeaBackEndUrl}/api/v1/auth/login/verify`;
+  authUrl = `${environment.tembeaBackEndUrl}/api/v1/auth/verify`;
   andelaAuthServiceToken;
   private currentUser: IUser;
   isAuthenticated = false;

@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   tembeaBackEndUrl: '',
   tembeaFrontEndUrl: '',
-  andelaAuthServiceUrl: 'https://api-staging.andela.com/login?redirect_url',
+  andelaAPIUrl: 'https://api-staging.andela.com',
 };
 
 /*

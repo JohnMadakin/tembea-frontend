@@ -13,6 +13,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AngularMaterialModule } from '../angular-material.module';
 import { RouteRequestsComponent } from './routes/route-requests/route-requests.component';
 import { EmptyPageComponent } from './empty-page/empty-page.component';
+import { ConvertTimePipe } from '../shared/pipes/convert-time.pipe';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { EmptyPageComponent } from './empty-page/empty-page.component';
     TripsComponent,
     HeaderComponent,
     RouteRequestsComponent,
-    EmptyPageComponent
+    EmptyPageComponent,
+    ConvertTimePipe
   ],
   imports: [
     CommonModule,

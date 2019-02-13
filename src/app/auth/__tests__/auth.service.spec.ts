@@ -102,7 +102,7 @@ describe('AuthService', () => {
         expect(data).toEqual(response);
       });
 
-    const loginRequest: TestRequest = httpTestingController.expectOne(`${tembeaBackEndUrl}/api/v1/auth/login/verify`);
+    const loginRequest: TestRequest = httpTestingController.expectOne(`${tembeaBackEndUrl}/api/v1/auth/verify`);
 
     expect(loginRequest.request.method).toEqual('GET');
 

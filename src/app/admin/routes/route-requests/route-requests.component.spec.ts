@@ -8,6 +8,9 @@ import getAllResponseMock from './__mocks__/get-all-response.mock';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {By} from '@angular/platform-browser';
 import {EmptyPageComponent} from '../../empty-page/empty-page.component';
+import { ConvertTimePipe } from 'src/app/shared/pipes/convert-time.pipe';
+import {AisService} from '../../__services__/ais.service';
+import {of} from 'rxjs';
 
 describe('RouteRequestsComponent', () => {
   let component: RouteRequestsComponent;
@@ -15,18 +18,26 @@ describe('RouteRequestsComponent', () => {
   let httpMock: HttpTestingController;
   let service: RoutesService;
 
+  const AisMock = {
+    getResponse: () => of({ picture: ''})
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RouteRequestsComponent, EmptyPageComponent ],
+      declarations: [ RouteRequestsComponent, EmptyPageComponent, ConvertTimePipe ],
       imports: [
         NoopAnimationsModule,
         HttpClientTestingModule,
         AngularMaterialModule
       ],
+      providers: [
+        { provide: AisService, useValue: AisMock }
+      ]
     })
     .compileComponents();
     fixture = TestBed.createComponent(RouteRequestsComponent);
     component = fixture.componentInstance;
+    RoutesService.activeRouteRequest = getAllResponseMock.routes[0];
     fixture.detectChanges();
   }));
 
