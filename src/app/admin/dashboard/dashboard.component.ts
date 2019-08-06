@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit {
     private tripService: TripsDataService,
     private riderService: RiderService,
     private departmentsService: DepartmentsService,
-    private readonly hbManager: HomeBaseManager,
+    private readonly hbManager: HomeBaseManager
   ) { }
 
   ngOnInit() {
