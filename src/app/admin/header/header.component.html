@@ -65,6 +65,10 @@
     </div>
 
     <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
+      <div *ngIf="user.locations && user.locations.length > 1">
+        Show select location dropdown
+      </div>
+
       <div class="tool-bar-button">
         <button id="drop-down-button" [matMenuTriggerFor]="dropDown" class="action-button">
           <img class="upic" [src]="user.picture" alt="profile picture" />

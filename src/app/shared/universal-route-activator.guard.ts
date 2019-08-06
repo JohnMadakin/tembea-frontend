@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../auth/__services__/auth.service';
 import { CookieService } from '../auth/__services__/ngx-cookie-service.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { HomeBaseManager } from './homebase.manager';
+import { IUser } from './models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,8 @@ export class UniversalRouteActivatorGuard implements CanActivate {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private readonly hbManager: HomeBaseManager,
   ) {}
 
   canActivate(
@@ -30,12 +33,14 @@ export class UniversalRouteActivatorGuard implements CanActivate {
 
     if (!isAuthenticated && token && !isTokenExpired) {
       try {
-        const decoded = helper.decodeToken(token);
-        this.authService.setCurrentUser(decoded.userInfo);
+        let userInfo: IUser;
+        ({ userInfo } = helper.decodeToken(token));
+        this.authService.setCurrentUser(userInfo);
         this.authService.tembeaToken = token;
         this.authService.setupClock();
         this.authService.isAuthenticated = true;
         this.authService.isAuthorized = true;
+        this.hbManager.setHomebase(userInfo.locations[0]);
       } catch (err) {
         return this.redirectHome();
       }

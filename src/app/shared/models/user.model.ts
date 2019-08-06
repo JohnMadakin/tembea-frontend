@@ -8,4 +8,5 @@ export interface IUser {
   name: string;
   picture: string;
   roles: Array<string>;
+  locations: Array<string>;
 }

@@ -8,6 +8,7 @@ import { RiderService } from './rider-list/rider.service';
 import { IRider } from '../../shared/models/rider.model';
 import { Observable } from 'rxjs/Observable';
 import { DepartmentsService } from '../__services__/departments.service';
+import { HomeBaseManager } from '../../shared/homebase.manager';
 
 @Component({
   selector: 'app-dashboard',
@@ -74,6 +75,7 @@ export class DashboardComponent implements OnInit {
     tripsCost: [],
     departmentNames: []
   };
+  homebaseId: number;
 
   constructor(
     private routeUsageService: RouteUsageService,
@@ -81,12 +83,14 @@ export class DashboardComponent implements OnInit {
     private tripService: TripsDataService,
     private riderService: RiderService,
     private departmentsService: DepartmentsService,
+    private readonly hbManager: HomeBaseManager,
   ) { }
 
   ngOnInit() {
     const date = new Date;
     const currentDate = moment(date).format('YYYY-MM-DD');
     this.dateFilters = { from: {}, to: {}, startDate: { from: currentDate }, endDate: { to: currentDate } };
+    this.homebaseId = this.hbManager.getHomebaseId();
     this.getRoutesUsage();
     this.getRouteRatings();
     this.getTripsData();
