@@ -75,7 +75,7 @@ export class DashboardComponent implements OnInit {
     tripsCost: [],
     departmentNames: []
   };
-  homebaseId: number;
+  homebaseId: string;
 
   constructor(
     private routeUsageService: RouteUsageService,

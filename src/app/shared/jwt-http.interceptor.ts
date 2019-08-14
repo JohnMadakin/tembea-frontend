@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../auth/__services__/auth.service';
 import { AlertService } from './alert.service';
+import { HomeBaseManager } from './homebase.manager';
 
 @Injectable()
 export class JwtHttpInterceptor implements HttpInterceptor {
@@ -13,12 +14,14 @@ export class JwtHttpInterceptor implements HttpInterceptor {
     private authService: AuthService,
     private router: Router,
     private toastr: AlertService,
+    private hbManager: HomeBaseManager,
   ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const { tembeaToken } = this.authService;
     if (!request.url.includes('/auth/verify') && tembeaToken) {
-      const authReq = request.clone({ setHeaders: { Authorization: tembeaToken } });
+      const homebaseid = this.hbManager.getHomebaseId();
+      const authReq = request.clone({ setHeaders: { Authorization: tembeaToken, homebaseid } });
 
       return next.handle(authReq).pipe(
         catchError((error: HttpErrorResponse) => {

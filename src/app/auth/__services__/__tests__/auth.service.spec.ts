@@ -12,6 +12,7 @@ import { AlertService } from '../../../shared/alert.service';
 import { SpyObject } from '../../../__mocks__/SpyObject';
 import { mockToastr } from '../../../shared/__mocks__/mockData';
 import { MatDialog } from '@angular/material';
+import { HomeBaseManager } from 'src/app/shared/homebase.manager';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -24,6 +25,9 @@ describe('AuthService', () => {
 
   const response = { id: '121', name: 'james' };
   const { tembeaBackEndUrl } = environment;
+  const hbManagerMock = {
+    storeHomebase: jest.fn()
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -33,7 +37,8 @@ describe('AuthService', () => {
         { provide: ClockService,  useValue: new SpyObject(ClockService) },
         { provide: Router,  useValue: new SpyObject(Router) },
         { provide: AlertService, useValue: mockToastr },
-        { provide: MatDialog, useValue: { closeAll: jest.fn() }}
+        { provide: MatDialog, useValue: { closeAll: jest.fn() }},
+        { provide: HomeBaseManager, useValue: hbManagerMock }
       ]
     });
 
@@ -80,7 +85,8 @@ describe('AuthService', () => {
       email: 'john.papa@angular.ng',
       name: 'John Papa',
       picture: 'string',
-      roles: []
+      roles: [],
+      locations: []
     });
     const user: IUser = service.getCurrentUser();
     expect(user.id).toBe('1');
@@ -120,7 +126,7 @@ describe('AuthService', () => {
 
   it('should test authorize user method', () => {
     const token = 'token';
-    const res = { userInfo: { firstName: 'boy' }, token };
+    const res = { userInfo: { firstName: 'boy', locations: ['Nairobi'] }, token };
     const toastrSpy = authService.toastr.success;
     const cookieSpy = authService.cookieService.set;
     authService.authorizeUser(res);
@@ -136,7 +142,7 @@ describe('AuthService', () => {
 
   it('should authorize a user', () => {
     const token = 'token';
-    const res = { userInfo: { firstName: 'boy' }, token };
+    const res = { userInfo: { firstName: 'boy', locations: ['Nairobi'] }, token };
     const toastrSpy = authService.toastr.success;
     const cookieSpy = authService.cookieService.set;
     const initClockSpy = jest

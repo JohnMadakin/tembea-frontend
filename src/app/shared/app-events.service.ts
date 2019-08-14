@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Observer, Subscription } from 'rxjs';
-import { filter, share } from 'rxjs/operators';
+import { filter, share, first, take } from 'rxjs/operators';
 
 export interface IEventData {
   name: string;
@@ -26,7 +26,17 @@ export class AppEventService {
     }
   }
 
-  subscribe(eventName, callback: (event: IEventData) => void): Subscription {
+  subscribe(eventName, callback: (event: IEventData) => void, firstOne?: boolean): Subscription {
+    if (firstOne) {
+      return this.observable
+      .pipe(
+        filter(event => {
+          return event.name === eventName;
+        }),
+        first()
+      )
+      .subscribe(callback);
+    }
     return this.observable
       .pipe(
         filter(event => {

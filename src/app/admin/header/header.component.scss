@@ -19,7 +19,8 @@
 }
 
 button:hover,
-button:focus {
+button:focus,
+mat-form-field:hover {
   cursor: pointer;
 }
 .header-title{
@@ -33,7 +34,8 @@ button:focus {
   font-weight: normal;
 }
 
-button:hover {
+button:hover,
+mat-form-field:hover {
   box-shadow: 0 3px 7px 0 rgba(128, 143, 163, 0.11);
 }
 
@@ -53,8 +55,38 @@ button:hover {
   outline: none;
 
   mat-icon {
-    color: #b9c5d1;
+    color: #4f4f4f;
   }
+}
+
+.mat-form-field {
+  padding-right: .5000em;
+}
+
+.select {
+  padding-top: 6px;
+  padding-right: 6px;
+  padding-left: 6px;
+  padding-bottom: 0px;
+  font-size: 1rem;
+  font-weight: 200;
+  line-height: 21px;
+  color: #4f4f4f;
+}
+
+::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+.options {
+  padding-top: 6px;
+  padding-right: 6px;
+  padding-left: 6px;
+  padding-bottom: 6px;
+  font-size: 1rem;
+  font-weight: 200;
+  line-height: 21px;
+  color: #4f4f4f;
 }
 
 .logout::after {

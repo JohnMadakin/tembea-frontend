@@ -7,6 +7,7 @@ import { CookieService } from '../auth/__services__/ngx-cookie-service.service';
 import { mockAuthService } from '../auth/__mocks__/authService.mock';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { mockRouter } from './__mocks__/mockData';
+import { HomeBaseManager } from './homebase.manager';
 
 describe('UniversalRouteActivatorGuard', () => {
   let routeGuard: UniversalRouteActivatorGuard;
@@ -19,13 +20,18 @@ describe('UniversalRouteActivatorGuard', () => {
     delete: () => {}
   };
 
+  const homebaseManagerMock = {
+    setHomebase: jest.fn()
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         UniversalRouteActivatorGuard,
         { provide: Router, useValue: mockRouter },
         { provide: AuthService, useValue: mockAuthService },
-        { provide: CookieService, useValue: mockCookieService }
+        { provide: CookieService, useValue: mockCookieService },
+        { provide: HomeBaseManager, useValue: homebaseManagerMock }
       ]
     });
 
@@ -58,7 +64,7 @@ describe('UniversalRouteActivatorGuard', () => {
 
   describe('checkLogin', () => {
     it('should authenticate user if the user has a valid token and return true', () => {
-      const decodedTokenMock = { userInfo: { hi: 'user' } };
+      const decodedTokenMock = { userInfo: { hi: 'user', locations: ['Kigali'] } };
       jest.spyOn(routeGuard, 'redirectHome');
       jest.spyOn(authService, 'setCurrentUser');
       jest.spyOn(authService, 'setupClock');

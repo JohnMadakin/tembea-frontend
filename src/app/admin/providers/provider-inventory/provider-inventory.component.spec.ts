@@ -8,6 +8,7 @@ import { AppTestModule } from '../../../__tests__/testing.module';
 import providersMock from '../../../__mocks__/providers.mock';
 import { AppEventService } from 'src/app/shared/app-events.service';
 import { ProviderService } from '../../__services__/providers.service';
+import { HomeBaseManager } from 'src/app/shared/homebase.manager';
 
 
 describe('ProvidersComponent', () => {
@@ -17,11 +18,17 @@ describe('ProvidersComponent', () => {
   let searchService: any;
   let appEventService: any;
   let providerService: any;
+  const mockHbManager = {
+    getHomebaseId: jest.fn().mockReturnValue(4),
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ProviderInventoryComponent],
       imports: [AppTestModule],
+      providers: [
+        { provide: HomeBaseManager, useValue: mockHbManager }
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
       .compileComponents();

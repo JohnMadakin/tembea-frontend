@@ -65,10 +65,19 @@
     </div>
 
     <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
-      <div *ngIf="user.locations && user.locations.length > 1">
-        Show select location dropdown
+      <div class="tool-bar-button">
+        <div  *ngIf="locations.length > 1">
+          <mat-form-field class="action-button">
+            <mat-select class="select"
+              [(ngModel)]="homebase.homebaseName"
+              (selectionChange)="changeHomebase($event)">
+              <mat-option class="options" *ngFor="let location of locations" [value]="location">
+                {{location}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
-
       <div class="tool-bar-button">
         <button id="drop-down-button" [matMenuTriggerFor]="dropDown" class="action-button">
           <img class="upic" [src]="user.picture" alt="profile picture" />

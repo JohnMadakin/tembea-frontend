@@ -24,6 +24,7 @@ import { mockCookieService } from '../../../shared/__mocks__/mockData';
 import { ClockService } from '../../../auth/__services__/clock.service';
 import { AppEventService } from '../../../shared/app-events.service';
 import { ShortenNamePipe } from '../../__pipes__/shorten-name.pipe';
+import { HomeBaseManager } from 'src/app/shared/homebase.manager';
 
 describe('RoutesInventoryComponent', () => {
   let component: RoutesInventoryComponent;
@@ -77,6 +78,10 @@ describe('RoutesInventoryComponent', () => {
     },
   };
 
+  const hbManagerMock = {
+    getHomebaseId: jest.fn().mockReturnValue(4),
+  };
+
   beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [
@@ -95,6 +100,7 @@ describe('RoutesInventoryComponent', () => {
         { provide: SearchService, useValue: searchServiceMock },
         { provide: CookieService, useValue: mockCookieService },
         { provide: ClockService, useValue: clockServiceMock },
+        { provide: HomeBaseManager, useValue: hbManagerMock },
         {
           provide: MAT_DIALOG_DATA, useValue: {
             data: {

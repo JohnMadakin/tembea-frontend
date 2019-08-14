@@ -26,6 +26,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ProviderSelectorComponent } from './admin/routes/route-approve-decline-modal/provider-selector/provider-selector.component';
+import { HomeBaseService } from './shared/homebase.service';
+import { HomeBaseManager } from './shared/homebase.manager';
 
 const toastr: Toastr = window['toastr'];
 
@@ -53,6 +55,8 @@ const toastr: Toastr = window['toastr'];
     AlertService,
     CookieService,
     ClockService,
+    HomeBaseService,
+    HomeBaseManager,
     { provide: TOASTR_TOKEN, useValue: toastr },
     { provide: HTTP_INTERCEPTORS, useClass: JwtHttpInterceptor, multi: true },
     { provide: ErrorHandler, useFactory: errorHandlerFactory }

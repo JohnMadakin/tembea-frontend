@@ -9,6 +9,7 @@ import { IUser } from '../../shared/models/user.model';
 import { CookieService } from './ngx-cookie-service.service';
 import { ClockService } from './clock.service';
 import { AlertService } from '../../shared/alert.service';
+import { HomeBaseManager } from 'src/app/shared/homebase.manager';
 
 @Injectable({
   providedIn: 'root'
@@ -23,14 +24,15 @@ export class AuthService {
   isAuthorized = true;
   token: string;
   clockSubscription: Subscription;
-
   constructor(
     private http: HttpClient,
     public cookieService: CookieService,
     private clock: ClockService,
     private router: Router,
     public toastr: AlertService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private readonly hbManager: HomeBaseManager,
+
   ) {}
 
   getCurrentUser(): IUser {
@@ -65,6 +67,8 @@ export class AuthService {
   logout(): void {
     this.cookieService.delete('jwt_token', '/');
     this.cookieService.delete('tembea_token', '/');
+    localStorage.removeItem('HOMEBASE_ID');
+    localStorage.removeItem('HOMEBASE_NAME');
     this.isAuthenticated = false;
     this.clockSubscription.unsubscribe();
     this.dialog.closeAll();
@@ -78,6 +82,7 @@ export class AuthService {
     this.setCurrentUser(userInfo);
     this.toastr.success('Login Successful');
     this.cookieService.set('tembea_token', `${token}`, 0.125, '/');
+    this.hbManager.storeHomebase(userInfo.locations[0]);
     this.setupClock();
     return this.router.navigate(['/admin']);
   }

@@ -59,7 +59,9 @@ export class DepartmentsComponent implements OnInit {
       (error) => {
         if (error) {
           this.isLoading = false;
-          this.displayText = `Ooops! We're having connection problems.`;
+          this.displayText =
+          error.status === 404
+            ? this.displayText : `Ooops! We're having connection problems.`;
           return;
         }
       });

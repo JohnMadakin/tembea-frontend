@@ -17,6 +17,8 @@ import { toastrMock } from '../routes/__mocks__/create-route';
 import { AlertService } from '../../shared/alert.service';
 import { HeaderComponent } from '../header/header.component';
 import { AppEventService } from 'src/app/shared/app-events.service';
+import { FormsModule } from '@angular/forms';
+import { HomeBaseManager } from 'src/app/shared/homebase.manager';
 
 const sideNavMock = new NavMenuService();
 
@@ -24,6 +26,8 @@ const sideNavMock = new NavMenuService();
 const appEventsMock = {
   broadcast: jest.fn()
 };
+
+const hbManagerMock = {};
 
 describe('SideBarComponent', () => {
   let component: AdminComponent;
@@ -38,6 +42,7 @@ describe('SideBarComponent', () => {
     TestBed.configureTestingModule({
       declarations: [AdminComponent],
       imports: [
+        FormsModule,
         NoopAnimationsModule,
         AngularMaterialModule,
         HttpClientModule,
@@ -134,6 +139,7 @@ describe('SideBarComponent on small devices', () => {
     TestBed.configureTestingModule({
       declarations: [AdminComponent, HeaderComponent],
       imports: [
+        FormsModule,
         NoopAnimationsModule,
         AngularMaterialModule,
         HttpClientModule,
@@ -144,7 +150,8 @@ describe('SideBarComponent on small devices', () => {
         { provide: AlertService, useValue: toastrMock },
         { provide: MediaObserver, useValue: mediaObserverMock },
         { provide: NavMenuService, useValue: sideNavMock },
-        { provide: AppEventService, useValue: appEventsMock }
+        { provide: AppEventService, useValue: appEventsMock },
+        { provide: HomeBaseManager, useValue: hbManagerMock }
       ]
     })
       .compileComponents();

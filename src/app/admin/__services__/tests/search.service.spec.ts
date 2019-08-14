@@ -13,6 +13,7 @@ import { RouteInventoryModel } from '../../../shared/models/route-inventory.mode
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { MatDialog } from '@angular/material';
+import { HomeBaseManager } from 'src/app/shared/homebase.manager';
 
 
 describe('SearchService', () => {
@@ -26,6 +27,9 @@ describe('SearchService', () => {
   const getRoutesResponse = new RouteInventoryModel().deserialize(
     getRoutesResponseMock
   );
+  const hbManagerMock = {
+    getHomebaseId: jest.fn().mockReturnValue(4)
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,7 +39,8 @@ describe('SearchService', () => {
         { provide: ClockService, useValue: new SpyObject(ClockService) },
         { provide: Router, useValue: new SpyObject(Router) },
         { provide: AlertService, useValue: mockToastr },
-        { provide: MatDialog, useValue: { closeAll: jest.fn() } }
+        { provide: MatDialog, useValue: { closeAll: jest.fn() } },
+        { provide: HomeBaseManager, useValue: hbManagerMock }
       ]
     });
 

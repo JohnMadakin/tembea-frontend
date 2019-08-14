@@ -18,10 +18,16 @@ import { AddCabsModalComponent } from '../cabs/add-cab-modal/add-cab-modal.compo
 import {AddProviderModalComponent} from '../providers/add-provider-modal/add-provider-modal.component';
 import { AppEventService } from '../../shared/app-events.service';
 import { DriverModalComponent } from '../providers/driver-modal/driver-modal.component';
+import { FormsModule } from '@angular/forms';
+import { HomeBaseManager } from 'src/app/shared/homebase.manager';
 class MockServices {
   public events = of(new NavigationEnd(0, '/', null));
 }
 
+const mockHbManager = {
+  getHomeBase: jest.fn(),
+  getHomeBases: jest.fn()
+};
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
@@ -38,6 +44,7 @@ describe('HeaderComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent, AdminComponent],
       imports: [
+        FormsModule,
         AngularMaterialModule,
         HttpClientModule,
         RouterTestingModule.withRoutes(
@@ -56,9 +63,10 @@ describe('HeaderComponent', () => {
         { provide: RouterModule, useClass: MockServices },
         { provide: AlertService, useValue: toastrMock},
         { provide: AddCabsModalComponent, useValue: mockCabsModalComponent },
-        { provide: AddProviderModalComponent, useValue: mockProviderModalComponent},
-        { provide: AppEventService, useValue: mockAppEventService},
-        {provide: Subscription, useValue: mockCabsModalComponent}
+        { provide: AddProviderModalComponent, useValue: mockProviderModalComponent },
+        { provide: AppEventService, useValue: mockAppEventService },
+        { provide: Subscription, useValue: mockCabsModalComponent },
+        { provide: HomeBaseManager, useValue: mockHbManager }
       ]
     }).compileComponents();
 
@@ -74,6 +82,12 @@ describe('HeaderComponent', () => {
   describe('ngOnInit()', () => {
     it('should change header title', async () => {
       jest.spyOn(component['appEventService'], 'subscribe');
+      jest.spyOn(component.auth, 'getCurrentUser').mockReturnValue({ locations: [{
+        id: 4,
+        name: 'Meshack',
+        role: 'Admin'
+      }]
+    });
       component.ngOnInit();
       expect(component['appEventService'].subscribe).toHaveBeenCalled();
       await fixture.ngZone.run(async () => {
@@ -154,13 +168,14 @@ describe('HeaderComponent on xsmall devices', () => {
 
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent],
-      imports: [HttpClientModule, RouterTestingModule, AngularMaterialModule],
+      imports: [HttpClientModule, RouterTestingModule, AngularMaterialModule, FormsModule],
 providers: [
         CookieService,
         ClockService,
         { provide: MediaObserver, useValue: mediaObserverMock },
         { provide: NavMenuService, useValue: navMenuServiceMock },
-        { provide: AlertService, useValue: toastrMock}
+        { provide: AlertService, useValue: toastrMock },
+        { provide: HomeBaseManager, useValue: mockHbManager }
       ]
     }).compileComponents();
 

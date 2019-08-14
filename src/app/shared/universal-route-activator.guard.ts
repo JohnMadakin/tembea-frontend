@@ -40,7 +40,7 @@ export class UniversalRouteActivatorGuard implements CanActivate {
         this.authService.setupClock();
         this.authService.isAuthenticated = true;
         this.authService.isAuthorized = true;
-        this.hbManager.setHomebase(userInfo.locations[0]);
+        this.hbManager.setHomebase(userInfo.locations[0].name);
       } catch (err) {
         return this.redirectHome();
       }

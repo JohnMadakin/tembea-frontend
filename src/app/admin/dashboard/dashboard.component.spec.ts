@@ -24,10 +24,10 @@ import { RiderListComponent } from './rider-list/rider-list.component';
 import { TripPieChartComponent } from './trip-pie-chart/trip-pie-chart.component';
 import { DepartmentsService } from '../__services__/departments.service';
 import { RiderCardComponent } from './rider-list/rider-card/rider-card.component';
-import { Observable } from 'rxjs';
 import { TripBarChartComponent } from './trip-bar-chart/trip-bar-chart.component';
 import { ShortenTextPipe } from '../__pipes__/shorten-text.pipe';
 
+import { HomeBaseManager } from 'src/app/shared/homebase.manager';
 
 
 export const routeRatingServiceMock = {
@@ -55,6 +55,10 @@ describe('DashboardComponent', () => {
   };
   const departmentServiceMock = {
     get: jest.fn().mockReturnValue(of(departmentsMock)),
+  };
+
+  const homebaseManagerMock = {
+    getHomebaseId: jest.fn()
   };
 
 
@@ -89,6 +93,7 @@ describe('DashboardComponent', () => {
         { provide: TripsDataService, useValue: tripDataService },
         { provide: DepartmentsService, useValue: departmentServiceMock },
         { provide: RiderService, useValue: riderServiceMock },
+        { provide: HomeBaseManager, useValue: homebaseManagerMock }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

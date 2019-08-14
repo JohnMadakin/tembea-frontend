@@ -14,13 +14,13 @@ export class SearchService {
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': this.auth.tembeaToken
+      'Authorization': this.auth.tembeaToken,
     }),
   };
 
   constructor(
     private http: HttpClient,
-    private auth: AuthService
+    private auth: AuthService,
   ) { }
 
   searchData(terms: Observable<string>, status: string) {

@@ -7,11 +7,15 @@ import { JwtHttpInterceptor } from '../jwt-http.interceptor';
 import { HttpRequest } from '@angular/common/http';
 import { of } from 'rxjs';
 import { AlertService } from '../alert.service';
+import { HomeBaseManager } from '../homebase.manager';
 
 describe('JWTHttpInterceptor', () => {
   let interceptor: JwtHttpInterceptor;
   let authService: AuthService;
   let router: Router;
+  const mockHbManager = {
+    getHomebaseId: jest.fn(() => {}),
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -19,7 +23,8 @@ describe('JWTHttpInterceptor', () => {
         JwtHttpInterceptor,
         { provide: Router, useValue: mockRouter },
         { provide: AuthService, useValue: mockAuthService },
-        { provide: AlertService, useValue: mockToastr }
+        { provide: AlertService, useValue: mockToastr },
+        { provide: HomeBaseManager, useValue: mockHbManager }
       ]
     });
 

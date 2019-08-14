@@ -15,7 +15,8 @@ import { AppEventService } from '../../shared/app-events.service';
 import { AddCabsModalComponent } from '../cabs/add-cab-modal/add-cab-modal.component';
 import {AddProviderModalComponent} from '../providers/add-provider-modal/add-provider-modal.component';
 import { DriverModalComponent } from '../providers/driver-modal/driver-modal.component';
-
+import { IHomeBase } from 'src/app/shared/models/homebase.model';
+import { HomeBaseManager } from 'src/app/shared/homebase.manager';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -30,6 +31,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   user: IUser;
   updateHeaderSubscription: Subscription;
   logoutModalSub: Subscription;
+  homebase: IHomeBase;
+  locations;
+  setHomebaseSub: Subscription;
   constructor(
     private navItem: NavMenuService,
     public dialog: MatDialog,
@@ -37,11 +41,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private appEventService: AppEventService
-  ) { }
+    private appEventService: AppEventService,
+    private HbManager: HomeBaseManager,
+  ) {}
 
   ngOnInit() {
     this.user = this.auth.getCurrentUser();
+    this.locations = this.getLocations(this.user.locations);
+    this.homebase = this.HbManager.getHomeBase();
     this.getHeaderTitleFromRouteData();
     this.router.events.subscribe((event: RouterEvent) => {
       if (event instanceof NavigationEnd) {
@@ -83,6 +90,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
     if (this.logoutModalSub) {
       this.logoutModalSub.unsubscribe();
+    }
+    if (this.setHomebaseSub) {
+      this.setHomebaseSub.unsubscribe();
     }
   }
 
@@ -131,5 +141,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
         openModal(DriverModalComponent);
         break;
     }
+  }
+
+  getLocations(locationArray) {
+    const locations = locationArray.map((location) => location.name);
+    return Array.from(new Set(locations));
+  }
+
+  changeHomebase(event) {
+    this.HbManager.setHomebase(event.value);
+    this.setHomebaseSub = this.appEventService.subscribe('setHomebase', () => {
+      const currentUrl = this.activatedRoute['_routerState'].snapshot.url;
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate([currentUrl]);
+      });
+    }, true);
   }
 }
