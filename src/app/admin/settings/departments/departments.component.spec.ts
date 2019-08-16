@@ -18,6 +18,7 @@ import { ExportComponent } from '../../export-component/export.component';
 import { ConfirmModalComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { AddDepartmentsModalComponent } from './add-departments-modal/add-departments-modal.component';
 import { FormsModule } from '@angular/forms';
+import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
 
 
 describe('DepartmentsComponent', () => {
@@ -46,6 +47,10 @@ describe('DepartmentsComponent', () => {
     },
   };
 
+  const analyticsMock = {
+    sendEvent: jest.fn()
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DepartmentsComponent, EmptyPageComponent,
@@ -65,6 +70,7 @@ describe('DepartmentsComponent', () => {
             }
           }
         },
+        { provide: GoogleAnalyticsService, useValue: analyticsMock }
       ],
     })
     .overrideModule(BrowserDynamicTestingModule, {

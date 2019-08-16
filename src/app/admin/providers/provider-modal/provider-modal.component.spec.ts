@@ -7,6 +7,7 @@ import { ProviderModalComponent } from './provider-modal.component';
 import { ProviderService } from '../../__services__/providers.service';
 import { MockError } from '../../cabs/add-cab-modal/__mocks__/add-cabs-mock';
 import { AppEventService } from '../../../shared/app-events.service';
+import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
 
 const appEventService = new AppEventService();
 export const toastService = {
@@ -25,6 +26,11 @@ export const mockProviderService = {
 export const successMock = {
   success: true
 };
+
+const analyticsMock = {
+  sendEvent: jest.fn()
+};
+
 describe('ProviderModalComponent', () => {
   let component: ProviderModalComponent;
   let fixture: ComponentFixture<ProviderModalComponent>;
@@ -39,8 +45,8 @@ describe('ProviderModalComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: AlertService, useValue: toastService },
         { provide: ProviderService, useValue: mockProviderService },
-        { provide: AppEventService, useValue: appEventService }
-
+        { provide: AppEventService, useValue: appEventService },
+        { provide: GoogleAnalyticsService, useValue: analyticsMock }
       ]
     })
     .compileComponents();

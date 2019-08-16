@@ -6,6 +6,8 @@ import { AuthService } from 'src/app/auth/__services__/auth.service';
 import { IRouteApprovalDeclineInfo, IRouteDetails } from '../../../shared/models/route-approve-decline-info.model';
 import { RouteRequestService } from '../../__services__/route-request.service';
 import { AppEventService } from '../../../shared/app-events.service';
+import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
+import { eventsModel, modelActions } from '../../../utils/analytics-helper';
 
 @Component({
   templateUrl: 'route-approve-decline-modal.component.html',
@@ -30,6 +32,7 @@ export class RouteApproveDeclineModalComponent implements OnInit {
     public authService: AuthService,
     private routeService: RouteRequestService,
     private appEventService: AppEventService,
+    private analytics: GoogleAnalyticsService,
     @Inject(MAT_DIALOG_DATA) public data: IRouteApprovalDeclineInfo,
   ) {
 
@@ -63,6 +66,7 @@ export class RouteApproveDeclineModalComponent implements OnInit {
     action.subscribe(() => {
       this.closeDialog();
       this.appEventService.broadcast({ name: 'updateRouteRequestStatus' });
+      this.analytics.sendEvent(eventsModel.RouteRequest, modelActions.UPDATE);
     }, () => this.setLoading(false));
   }
 

@@ -2,7 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TripRequestService } from '../../__services__/trip-request.service';
-import { AlertService } from 'src/app/shared/alert.service';
+import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
+import { eventsModel, modelActions } from '../../../utils/analytics-helper';
 
 @Component({
   selector: 'app-update-provider-trip',
@@ -22,7 +23,8 @@ export class UpdateTripProviderModalComponent {
   constructor(
     public dialogRef: MatDialogRef<UpdateTripProviderModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public tripRequestService: TripRequestService
+    public tripRequestService: TripRequestService,
+    private analytics: GoogleAnalyticsService
   ) { }
 
   closeDialog() {
@@ -41,6 +43,7 @@ export class UpdateTripProviderModalComponent {
       providerId, comment: 'Updating trip\'s provider'
     })
     .subscribe(() => {
+      this.analytics.sendEvent(eventsModel.Trips, modelActions.UPDATE);
       this.dialogRef.close();
     });
   }

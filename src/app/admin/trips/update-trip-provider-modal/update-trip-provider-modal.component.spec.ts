@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TripRequestService } from '../../__services__/trip-request.service';
 import { AlertService } from '../../../shared/alert.service';
 import { TOASTR_TOKEN } from '../../../shared/toastr.service';
+import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
 
 import { UpdateTripProviderModalComponent } from './update-trip-provider-modal.component';
 
@@ -28,6 +29,10 @@ describe('UpdateTripProviderModalComponent', () => {
   const tripRequestServiceMock = {
     updateTrip: jest.fn(),
     confirmRequest: jest.fn()
+  };
+
+  const analyticsMock = {
+    sendEvent: jest.fn()
   };
 
   beforeEach(async(() => {
@@ -58,7 +63,8 @@ describe('UpdateTripProviderModalComponent', () => {
               activeTripId: 1
             }
           }
-        }
+        },
+        { provide: GoogleAnalyticsService, useValue: analyticsMock }
       ]
     }).compileComponents();
 

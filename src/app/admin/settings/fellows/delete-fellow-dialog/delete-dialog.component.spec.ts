@@ -9,6 +9,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FellowsService } from '../../../__services__/fellows.service';
 import { of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
+import { GoogleAnalyticsService } from '../../../__services__/google-analytics.service';
 
 describe('DeleteFellowModalComponent', () => {
   let fixture: ComponentFixture<DeleteFellowModalComponent>;
@@ -27,6 +28,9 @@ describe('DeleteFellowModalComponent', () => {
   const mockMatDialog = {
     open: jest.fn()
   };
+  const analyticsMock = {
+    sendEvent: jest.fn()
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,7 +40,8 @@ describe('DeleteFellowModalComponent', () => {
         { provide: MatDialogRef, useValue: mockMatDialogRef },
         { provide: MAT_DIALOG_DATA, useValue: mockMatDialogData },
         { provide: AlertService, useValue: mockToastr },
-        { provide: MatDialog, useValue: mockMatDialog}
+        { provide: MatDialog, useValue: mockMatDialog },
+        { provide: GoogleAnalyticsService, useValue: analyticsMock }
       ]
     }).compileComponents();
 

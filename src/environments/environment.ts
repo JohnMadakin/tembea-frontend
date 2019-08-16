@@ -11,6 +11,7 @@ export const environment = {
   teamUrl: 'andela-tembea.slack.com',
   googMapsAPIKey: 'AIzaSyDT1bJDksmdUa0221cLtjq36p9GidNa110',
   BUGSNAG_API_KEY: 'your glory my savior',
+  googleAnalyticsId: 'UA-145702213-1'
 };
 
 /*

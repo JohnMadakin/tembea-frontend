@@ -3,6 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FellowsService } from '../../../__services__/fellows.service';
 import { AlertService } from 'src/app/shared/alert.service';
 import { ISuccessResponse } from 'src/app/shared/models/success-response.model';
+import { GoogleAnalyticsService } from '../../../__services__/google-analytics.service';
+import { eventsModel, modelActions } from '../../../../utils/analytics-helper';
 
 @Component({
   templateUrl: './delete-dialog.component.html',
@@ -16,7 +18,8 @@ export class DeleteFellowModalComponent {
     public fellowsService: FellowsService,
     public alertService: AlertService,
     public dialogRef: MatDialogRef<DeleteFellowModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private analytics: GoogleAnalyticsService
   ) { }
 
   closeDialog(): void {
@@ -27,6 +30,7 @@ export class DeleteFellowModalComponent {
     this.fellowsService.removeFellowFromRoute(this.fellow.id).subscribe((data: ISuccessResponse) => {
       this.alertService.success(data.message);
       this.removeUser.emit();
+      this.analytics.sendEvent(eventsModel.Engineers, modelActions.DELETE);
     }, () => {
       this.alertService.error(
         'Something went terribly wrong, we couldn\`t remove the fellow. Please try again.'

@@ -4,6 +4,8 @@ import { IDepartmentsModel, IDepartmentResponse } from 'src/app/shared/models/de
 import { DepartmentsService } from 'src/app/admin/__services__/departments.service';
 import { AlertService } from 'src/app/shared/alert.service';
 import { AppEventService } from 'src/app/shared/app-events.service';
+import { GoogleAnalyticsService } from '../../../__services__/google-analytics.service';
+import { eventsModel, modelActions } from '../../../../utils/analytics-helper';
 
 @Component({
   templateUrl: './add-departments-modal.component.html',
@@ -18,7 +20,8 @@ export class AddDepartmentsModalComponent implements OnInit {
     public departmentService: DepartmentsService,
     public alert: AlertService,
     @Inject(MAT_DIALOG_DATA) public data: IDepartmentsModel,
-    private appEventService: AppEventService
+    private appEventService: AppEventService,
+    private analytics: GoogleAnalyticsService
   ) {
     this.model = this.data;
     this.departmentName = this.data.name;
@@ -43,10 +46,11 @@ export class AddDepartmentsModalComponent implements OnInit {
       this.alert.error('Something went wrong, please try again');
     }
   }
-  refereshDepartment(message) {
+  refereshDepartment(message, eventMessage: string) {
     this.alert.success(message);
     this.appEventService.broadcast({ name: 'newDepartment' });
     this.loading = false;
+    this.analytics.sendEvent(eventsModel.Departments, eventMessage);
     this.dialogRef.close();
   }
 
@@ -54,7 +58,7 @@ export class AddDepartmentsModalComponent implements OnInit {
     const { id, name, email } = department;
     this.departmentService.update(id, name, email).subscribe((res: IDepartmentResponse) => {
       if (res.success) {
-        this.refereshDepartment(res.message);
+        this.refereshDepartment(res.message, modelActions.UPDATE);
       }
     },
       (error) => {
@@ -71,9 +75,8 @@ export class AddDepartmentsModalComponent implements OnInit {
     this.departmentService.add(this.model)
     .subscribe(
       (res) => {
-
         if (res.success) {
-          this.refereshDepartment(res.message);
+          this.refereshDepartment(res.message, modelActions.CREATE);
         }
       },
       (error) => {

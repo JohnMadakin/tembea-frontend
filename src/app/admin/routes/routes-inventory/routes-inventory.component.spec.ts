@@ -25,6 +25,7 @@ import { ClockService } from '../../../auth/__services__/clock.service';
 import { AppEventService } from '../../../shared/app-events.service';
 import { ShortenNamePipe } from '../../__pipes__/shorten-name.pipe';
 import { HomeBaseManager } from 'src/app/shared/homebase.manager';
+import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
 
 describe('RoutesInventoryComponent', () => {
   let component: RoutesInventoryComponent;
@@ -82,6 +83,10 @@ describe('RoutesInventoryComponent', () => {
     getHomebaseId: jest.fn().mockReturnValue(4),
   };
 
+  const analyticsMock = {
+    sendEvent: jest.fn()
+  };
+
   beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [
@@ -110,6 +115,7 @@ describe('RoutesInventoryComponent', () => {
           }
         },
         { provide: Router, useValue: router },
+        { provide: GoogleAnalyticsService, useValue: analyticsMock }
       ],
       imports: [HttpClientTestingModule, AngularMaterialModule, BrowserAnimationsModule],
     })

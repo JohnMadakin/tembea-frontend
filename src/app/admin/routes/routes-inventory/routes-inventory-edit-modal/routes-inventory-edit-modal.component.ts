@@ -2,10 +2,11 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { IRouteInventory } from 'src/app/shared/models/route-inventory.model';
 import { RoutesInventoryService } from 'src/app/admin/__services__/routes-inventory.service';
-import { AppEventService } from 'src/app/shared/app-events.service';
 import { AlertService } from 'src/app/shared/alert.service';
 import { UpdatePageContentService } from 'src/app/shared/update-page-content.service';
 import { ProviderService } from '../../../__services__/providers.service';
+import { GoogleAnalyticsService } from '../../../__services__/google-analytics.service';
+import { eventsModel, modelActions } from '../../../../utils/analytics-helper';
 
 @Component({
   templateUrl: './routes-inventory-edit-modal.component.html',
@@ -21,7 +22,8 @@ export class RoutesInventoryEditModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: IRouteInventory,
     public routeService: RoutesInventoryService,
     private updatePage: UpdatePageContentService,
-    private providerService: ProviderService
+    private providerService: ProviderService,
+    private analytics: GoogleAnalyticsService
   ) { }
 
   ngOnInit() {
@@ -50,6 +52,7 @@ export class RoutesInventoryEditModalComponent implements OnInit {
     this.routeService.changeRouteStatus(id, routeDetails).subscribe((res) => {
       if (res.success) {
         this.updatePage.triggerSuccessUpdateActions('updateRouteInventory', res.message);
+        this.analytics.sendEvent(eventsModel.Routes, modelActions.UPDATE);
         this.dialogRef.close();
       }
     }, (err: any) => {

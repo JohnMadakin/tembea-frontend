@@ -7,6 +7,8 @@ import { AddDepartmentsModalComponent } from './add-departments-modal/add-depart
 import { ITEMS_PER_PAGE } from 'src/app/app.constants';
 import { AppEventService } from 'src/app/shared/app-events.service';
 import { ConfirmModalComponent } from '../../confirmation-dialog/confirmation-dialog.component';
+import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
+import { eventsModel, modelActions } from '../../../utils/analytics-helper';
 
 
 @Component({
@@ -32,6 +34,7 @@ export class DepartmentsComponent implements OnInit {
     public dialog: MatDialog,
     private alert: AlertService,
     private appEventService: AppEventService,
+    private analytics: GoogleAnalyticsService
   ) {
     this.pageNo = 1;
     this.pageSize = ITEMS_PER_PAGE;
@@ -87,6 +90,7 @@ export class DepartmentsComponent implements OnInit {
       .subscribe((response: IDepartmentResponse) => {
         const { success, message } = response;
         if (success) {
+          this.analytics.sendEvent(eventsModel.Departments, modelActions.DELETE);
           this.alert.success(`${departmentName} was Successfully Deleted`);
           return this.getDepartments();
         }

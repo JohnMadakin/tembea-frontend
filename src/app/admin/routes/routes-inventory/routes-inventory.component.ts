@@ -14,6 +14,8 @@ import { CreateRouteHelper } from '../create-route/create-route.helper';
 import { Subject, Subscription } from 'rxjs';
 import { SearchService } from '../../__services__/search.service';
 import { getDialogProps } from 'src/app/utils/generic-helpers';
+import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
+import { eventsModel, modelActions } from '../../../utils/analytics-helper';
 
 @Component({
   selector: 'app-inventory',
@@ -38,13 +40,14 @@ export class RoutesInventoryComponent implements OnInit, OnDestroy {
   subscriptions = new Array<Subscription>();
 
   constructor(
-    public routeService: RoutesInventoryService,
+    private searchService: SearchService,
+    private analytics: GoogleAnalyticsService,
     private alert: AlertService,
     private appEventsService: AppEventService,
     public dialog: MatDialog,
     public createRouteHelper: CreateRouteHelper,
     public router: Router,
-    private searchService: SearchService
+    public routeService: RoutesInventoryService,
   ) {
     this.pageNo = 1;
     this.sort = 'name,asc,batch,asc';
@@ -120,6 +123,7 @@ export class RoutesInventoryComponent implements OnInit, OnDestroy {
     try {
       const response = await this.routeService.createRoute(routeBatchId, this.duplicate);
       this.createRouteHelper.notifyUser([response.message], 'success');
+      this.analytics.sendEvent(eventsModel.Routes, modelActions.CREATE);
       this.router.navigate(['/admin/routes/inventory']);
       this.getRoutesInventory();
     } catch (error) {
@@ -137,6 +141,7 @@ export class RoutesInventoryComponent implements OnInit, OnDestroy {
       .subscribe((response) => {
         if (response.success) {
           this.updateRoutesData(id, status);
+          this.analytics.sendEvent(eventsModel.Routes, modelActions.UPDATE);
         }
       }, () => this.alert.error('Something went wrong! try again'));
   }
@@ -156,6 +161,7 @@ export class RoutesInventoryComponent implements OnInit, OnDestroy {
         const { success, message } = response;
         if (success) {
           this.alert.success(message);
+          this.analytics.sendEvent(eventsModel.Routes, modelActions.DELETE);
           this.getRoutesInventory();
         } else { this.alert.error(message); }
       });

@@ -6,6 +6,8 @@ import { ProviderService} from '../../__services__/providers.service';
 import { AlertService} from '../../../shared/alert.service';
 import { AppEventService } from '../../../shared/app-events.service';
 import SubscriptionHelper from '../../../utils/unsubscriptionHelper';
+import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
+import { eventsModel, modelActions } from '../../../utils/analytics-helper';
 
 @Component({
   selector: 'app-provider-card',
@@ -27,7 +29,9 @@ export class ProviderCardComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public providerService: ProviderService,
     public alert: AlertService,
-    public appEventService: AppEventService ) { }
+    public appEventService: AppEventService,
+    private analytics: GoogleAnalyticsService
+    ) { }
 
   ngOnInit() { }
 
@@ -44,6 +48,7 @@ export class ProviderCardComponent implements OnInit, OnDestroy {
       if (res.success) {
         this.appEventService.broadcast({ name: 'providerDeletedEvent'});
         this.alert.success(res.message);
+        this.analytics.sendEvent(eventsModel.Providers, modelActions.DELETE);
       }
     }, error => {
       this.alert.error(error.error.message);

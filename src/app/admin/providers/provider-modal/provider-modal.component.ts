@@ -4,6 +4,8 @@ import { NgForm } from '@angular/forms';
 import { ProviderService } from '../../__services__/providers.service';
 import { AlertService } from '../../../shared/alert.service';
 import {AppEventService} from '../../../shared/app-events.service';
+import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
+import { eventsModel, modelActions } from '../../../utils/analytics-helper';
 
 @Component({
   selector: 'app-provider-modal',
@@ -19,7 +21,8 @@ export class ProviderModalComponent implements OnInit {
     @Inject( MAT_DIALOG_DATA ) public data: any,
     public providerService: ProviderService,
     public toastService: AlertService,
-    public appEventService: AppEventService
+    public appEventService: AppEventService,
+    private analytics: GoogleAnalyticsService
   ) { }
 
   ngOnInit() { }
@@ -32,6 +35,7 @@ export class ProviderModalComponent implements OnInit {
         if (res.success) {
           this.toastService.success(res.message);
           this.appEventService.broadcast({ name: 'updatedProvidersEvent' });
+          this.analytics.sendEvent(eventsModel.Providers, modelActions.UPDATE);
           this.closeDialog();
         }
       }, error => {

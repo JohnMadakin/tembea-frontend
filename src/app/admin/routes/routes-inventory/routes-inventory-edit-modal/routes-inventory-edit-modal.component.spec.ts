@@ -7,6 +7,7 @@ import { editMockPayload } from '../__mocks__/route-inventory.mock';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { of, Observable } from 'rxjs';
 import { AlertService } from 'src/app/shared/alert.service';
+import { GoogleAnalyticsService } from '../../../__services__/google-analytics.service';
 
 describe('RoutesInventoryEditModalComponent', () => {
   let component: RoutesInventoryEditModalComponent;
@@ -40,6 +41,10 @@ describe('RoutesInventoryEditModalComponent', () => {
     }
   };
 
+  const analyticsMock = {
+    sendEvent: jest.fn()
+  };
+
     beforeEach(async(() => {
       const getProviders = { getProviders: jest.fn().mockImplementation((res: { success: true }) => of([])) } ;
       TestBed.configureTestingModule({
@@ -51,6 +56,7 @@ describe('RoutesInventoryEditModalComponent', () => {
           { provide: MAT_DIALOG_DATA, useValue: mockMatDialogData },
           { provide: AlertService, useValue: alert },
           { provide: ProviderService, useValue: getProviders },
+          { provide: GoogleAnalyticsService, useValue: analyticsMock }
         ]
       })
       .compileComponents();
@@ -73,7 +79,6 @@ describe('RoutesInventoryEditModalComponent', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
     });
-
   });
 
   describe('closedialog', () => {
@@ -94,7 +99,6 @@ describe('RoutesInventoryEditModalComponent', () => {
   });
 
   describe('editRoute', () => {
-
     it('should call changeRouteStatus', () => {
       mockRouteInventoryService.changeRouteStatus.mockReturnValue(of(editMockPayload));
       component.editRoute(editMockPayload);

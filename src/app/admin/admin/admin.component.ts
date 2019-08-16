@@ -8,6 +8,7 @@ import { NavMenuService } from '../__services__/nav-menu.service';
 import * as mainRoutes from './main-routes.json';
 import { HeaderComponent } from '../header/header.component';
 import { AppEventService } from '../../shared/app-events.service';
+import { GoogleAnalyticsService } from '../__services__/google-analytics.service';
 
 
 @Component({
@@ -29,18 +30,20 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(HeaderComponent) header: HeaderComponent;
 
   constructor(
+    private events: AppEventService,
+    private analytics: GoogleAnalyticsService,
     private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
     private media: MediaObserver,
     private router: Router,
     private navMenuService: NavMenuService,
     private cd: ChangeDetectorRef,
-    private events: AppEventService
   ) {
     this.registerIcons();
     this.router.events.subscribe((event: RouterEvent) => {
       if (event instanceof NavigationEnd) {
         this.activeRoute = event.url;
+        this.analytics.sendPageView(this.activeRoute);
       }
     });
   }

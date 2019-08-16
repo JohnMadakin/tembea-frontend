@@ -6,6 +6,8 @@ import { AlertService } from '../../../shared/alert.service';
 import { AppEventService } from '../../../shared/app-events.service';
 import { SlackService } from '../../__services__/slack.service';
 import { IChannel } from '../../../shared/models/channel.model';
+import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
+import { eventsModel, modelActions } from '../../../utils/analytics-helper';
 
 @Component({
   templateUrl: './add-provider-modal.component.html',
@@ -28,7 +30,8 @@ export class AddProviderModalComponent implements OnInit {
     public providerService: ProviderService,
     public alert: AlertService,
     private appEventService: AppEventService,
-    public slackService: SlackService
+    public slackService: SlackService,
+    private analytics: GoogleAnalyticsService
   ) {
     this.providerData = new ProviderModel('', '');
   }
@@ -65,6 +68,7 @@ export class AddProviderModalComponent implements OnInit {
         if (responseData.success) {
           this.alert.success(responseData.message);
           this.appEventService.broadcast({ name: 'newProvider' });
+          this.analytics.sendEvent(eventsModel.Providers, modelActions.CREATE);
           this.loading = false;
           this.dialogRef.close();
         }

@@ -6,6 +6,8 @@ import { CreateRouteHelper } from './create-route.helper';
 import { RoutesInventoryService } from '../../__services__/routes-inventory.service';
 import { NavMenuService } from '../../__services__/nav-menu.service';
 import { NgForm } from '@angular/forms';
+import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
+import { eventsModel, modelActions } from '../../../utils/analytics-helper';
 
 class RouteModel {
   constructor(public routeName?: string,
@@ -45,7 +47,9 @@ export class CreateRouteComponent implements AfterViewInit {
     private routeService: RoutesInventoryService,
     public createRouteHelper: CreateRouteHelper,
     private router: Router,
-    private navMenuService: NavMenuService
+    private navMenuService: NavMenuService,
+    private analytics: GoogleAnalyticsService
+
   ) {
     this.model = new RouteModel();
     this.model.capacity = 1;
@@ -127,6 +131,7 @@ export class CreateRouteComponent implements AfterViewInit {
       this.navMenuService.stopProgress();
       this.createRouteHelper.notifyUser([response.message], 'success');
       this.model = null;
+      this.analytics.sendEvent(eventsModel.Routes, modelActions.CREATE);
       this.router.navigate(['/admin/routes/inventory']);
     } catch (e) {
       this.navMenuService.stopProgress();

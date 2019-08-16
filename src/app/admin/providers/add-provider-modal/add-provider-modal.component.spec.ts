@@ -9,6 +9,7 @@ import { providerResponseMock} from './__mocks__/add-provider.mocks';
 import {MockError} from '../../cabs/add-cab-modal/__mocks__/add-cabs-mock';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SlackService } from '../../__services__/slack.service';
+import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
 
 describe('AddProviderModalComponent', () => {
   let component: AddProviderModalComponent;
@@ -34,6 +35,10 @@ describe('AddProviderModalComponent', () => {
     error: jest.fn()
   };
 
+  const analyticsMock = {
+    sendEvent: jest.fn()
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AddProviderModalComponent ],
@@ -43,6 +48,7 @@ describe('AddProviderModalComponent', () => {
         { provide: ProviderService, useValue: mockProviderService },
         { provide: AlertService, useValue: mockAlert},
         { provide: SlackService, useValue: mockSlackService },
+        { provide: GoogleAnalyticsService, useValue: analyticsMock }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

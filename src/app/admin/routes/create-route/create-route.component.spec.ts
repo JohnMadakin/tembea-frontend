@@ -8,6 +8,10 @@ import {
 
 const mockCoordinates = { lat: -1.87637, lng: 36.89373 };
 const mockAddress = '5, alien road, Pluto Ticket Point, Jupitar.';
+const analyticsMock = {
+  sendPageView: jest.fn(),
+  sendEvent: jest.fn()
+};
 
 describe('CreateRouteComponent', () => {
   let component: CreateRouteComponent;
@@ -18,7 +22,8 @@ describe('CreateRouteComponent', () => {
       routeServiceMock,
       createRouteHelperMock,
       routerMock,
-      navMenuServiceMock
+      navMenuServiceMock,
+      analyticsMock
     );
     component.destinationInputElement = { nativeElement: { value: 'someValue' } };
   });

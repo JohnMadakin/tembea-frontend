@@ -7,6 +7,7 @@ import { AddDepartmentsModalComponent } from './add-departments-modal.component'
 import { DepartmentsService } from 'src/app/admin/__services__/departments.service';
 import { AlertService } from 'src/app/shared/alert.service';
 import { responseMock, MockError } from '../__mocks__/add-department-mock';
+import { GoogleAnalyticsService } from '../../../__services__/google-analytics.service';
 
 describe('AddDepartmentsModalComponent', () => {
   let component: AddDepartmentsModalComponent;
@@ -35,6 +36,10 @@ describe('AddDepartmentsModalComponent', () => {
     error: jest.fn()
   };
 
+  const analyticsMock = {
+    sendEvent: jest.fn()
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AddDepartmentsModalComponent ],
@@ -43,7 +48,8 @@ describe('AddDepartmentsModalComponent', () => {
         { provide: MatDialogRef, useValue: mockMatDialogRef },
         { provide: DepartmentsService, useValue: mockDepartmentService },
         { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: AlertService, useValue: alert }
+        { provide: AlertService, useValue: alert },
+        { provide: GoogleAnalyticsService, useValue: analyticsMock }
       ]
     })
     .compileComponents();

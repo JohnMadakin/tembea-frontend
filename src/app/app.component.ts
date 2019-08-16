@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, fromEvent, Subscription } from 'rxjs';
 import { AlertService } from './shared/alert.service';
+import { GoogleAnalyticsService } from './admin/__services__/google-analytics.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ export class AppComponent implements OnInit, OnDestroy {
   offlineSubscription: Subscription;
 
   constructor(
-    private toastr: AlertService
+    private toastr: AlertService,
+    private analytics: GoogleAnalyticsService
   ) { }
 
   ngOnInit(): void {
@@ -23,6 +25,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.offlineSubscription = this.offlineEvent.subscribe(() => {
       this.toastr.error('You seem to be offline.');
     });
+
+    this.analytics.init();
   }
 
   ngOnDestroy(): void {

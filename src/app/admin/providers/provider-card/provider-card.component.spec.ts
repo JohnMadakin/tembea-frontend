@@ -10,6 +10,7 @@ import { AppEventService } from '../../../shared/app-events.service';
 import { AlertService } from '../../../shared/alert.service';
 import { ConfirmModalComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
 
 
 const matDialogMock = {
@@ -32,6 +33,11 @@ const mockMatDialogData = {
     confirmText: 'yes'
   }
 };
+
+const analyticsMock = {
+  sendEvent: jest.fn()
+};
+
 describe('ProviderCardComponent', () => {
   let component: ProviderCardComponent;
   let fixture: ComponentFixture<ProviderCardComponent>;
@@ -45,6 +51,7 @@ describe('ProviderCardComponent', () => {
       declarations: [ ProviderCardComponent, ConfirmModalComponent ],
       providers: [{provide: MatDialog, useValue: matDialogMock},
         { provide: MatDialogRef, useValue: mockMatDialogRef },
+        { provide: GoogleAnalyticsService, useValue: analyticsMock },
         { provide: MAT_DIALOG_DATA, useValue: mockMatDialogData }],
       imports: [
         MatDialogModule, AppTestModule, BrowserAnimationsModule, NoopAnimationsModule, RouterTestingModule],
