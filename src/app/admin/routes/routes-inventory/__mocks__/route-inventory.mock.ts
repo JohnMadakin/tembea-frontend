@@ -38,6 +38,7 @@ export const editMockPayload = {
     name: 'Grace Islands',
     regNumber: 'SMK 319 JK',
     status: 'Inactive',
-    takeOff: '22:00'
+    takeOff: '22:00',
+    providerId: 1
   }
 };

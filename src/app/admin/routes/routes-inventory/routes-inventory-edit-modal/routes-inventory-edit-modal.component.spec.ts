@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-
 import { RoutesInventoryEditModalComponent } from './routes-inventory-edit-modal.component';
 import { RoutesInventoryService } from 'src/app/admin/__services__/routes-inventory.service';
+import { ProviderService } from '../../../__services__/providers.service';
 import { editMockPayload } from '../__mocks__/route-inventory.mock';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { of, Observable } from 'rxjs';
@@ -16,7 +16,7 @@ describe('RoutesInventoryEditModalComponent', () => {
   };
 
   const mockMatDialogRef = {
-    close: () => {},
+    close: () => { },
   };
 
   const alert = {
@@ -36,75 +36,84 @@ describe('RoutesInventoryEditModalComponent', () => {
       capacity: 15,
       batch: 'A',
       inUse: 5,
-      status: 'Active'
+      status: 'Active',
     }
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ RoutesInventoryEditModalComponent ],
-      imports: [FormsModule],
-      providers: [
-        { provide: MatDialogRef, useValue: mockMatDialogRef },
-        { provide: RoutesInventoryService, useValue: mockRouteInventoryService },
-        { provide: MAT_DIALOG_DATA, useValue: mockMatDialogData },
-        { provide: AlertService, useValue: alert }
-      ]
-    })
+    beforeEach(async(() => {
+      const getProviders = { getProviders: jest.fn().mockImplementation((res: { success: true }) => of([])) } ;
+      TestBed.configureTestingModule({
+        declarations: [ RoutesInventoryEditModalComponent ],
+        imports: [FormsModule],
+        providers: [
+          { provide: MatDialogRef, useValue: mockMatDialogRef },
+          { provide: RoutesInventoryService, useValue: mockRouteInventoryService },
+          { provide: MAT_DIALOG_DATA, useValue: mockMatDialogData },
+          { provide: AlertService, useValue: alert },
+          { provide: ProviderService, useValue: getProviders },
+        ]
+      })
+      .compileComponents();
 
-    .compileComponents();
-  }));
+      fixture = TestBed.createComponent(RoutesInventoryEditModalComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+      data = {
+        id: 1,
+        providerId: 1
+      };
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(RoutesInventoryEditModalComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-    data = {
-      id: 1
-    };
+    afterEach(() => {
+      jest.resetAllMocks();
+      jest.restoreAllMocks();
+    });
+
+  describe('initial load', () => {
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
   });
 
-  afterEach(() => {
-    jest.resetAllMocks();
-    jest.restoreAllMocks();
+  describe('closedialog', () => {
+    it('should close the dialog', () => {
+      jest.spyOn(component.dialogRef, 'close');
+      component.closeDialog();
+      expect(component.dialogRef.close).toHaveBeenCalledTimes(1);
+    });
   });
 
-describe('initial load', () => {
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('ngOnInit', () => {
+      it('should test function getProviders', () => {
+      jest.spyOn(component, 'getProviders');
+      component.ngOnInit();
+      expect(component.getProviders).toHaveBeenCalledTimes(1);
+      expect(component.providers).toEqual([]);
+    });
   });
 
-});
+  describe('editRoute', () => {
 
-describe('closedialog', () => {
-  it('should close the dialog', () => {
-    jest.spyOn(component.dialogRef, 'close');
-    component.closeDialog();
-    expect(component.dialogRef.close).toHaveBeenCalledTimes(1);
+    it('should call changeRouteStatus', () => {
+      mockRouteInventoryService.changeRouteStatus.mockReturnValue(of(editMockPayload));
+      component.editRoute(editMockPayload);
+      expect(component.routeService.changeRouteStatus).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call AlertService.success upon successfull edit', () => {
+      mockRouteInventoryService.changeRouteStatus.mockReturnValue(of(editMockPayload));
+      jest.spyOn(component.alert, 'success');
+      component.editRoute(data);
+      expect(component.alert.success).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call AlertService.error upon unsuccessfull edit', () => {
+      const mockError = Observable.create(observer => observer.error(new Error('Not working')));
+      mockRouteInventoryService.changeRouteStatus.mockReturnValue(mockError);
+      jest.spyOn(component.alert, 'error');
+      component.editRoute(data);
+      expect(component.alert.error).toHaveBeenCalledTimes(1);
+    });
   });
-});
-
-describe('editRoute', () => {
-
-  it('should call changeRouteStatus', () => {
-    mockRouteInventoryService.changeRouteStatus.mockReturnValue(of(editMockPayload));
-    component.editRoute(editMockPayload);
-    expect(component.routeService.changeRouteStatus).toHaveBeenCalledTimes(1);
-  });
-
-  it('should call AlertService.success upon successfull edit', () => {
-    mockRouteInventoryService.changeRouteStatus.mockReturnValue(of(editMockPayload));
-    jest.spyOn(component.alert, 'success');
-    component.editRoute(data);
-    expect(component.alert.success).toHaveBeenCalledTimes(1);
-  });
-
-  it('should call AlertService.error upon unsuccessfull edit', () => {
-    const mockError = Observable.create(observer => observer.error(new Error('Not working')));
-    mockRouteInventoryService.changeRouteStatus.mockReturnValue(mockError);
-    jest.spyOn(component.alert, 'error');
-    component.editRoute(data);
-    expect(component.alert.error).toHaveBeenCalledTimes(1);
-  });
-});
 });

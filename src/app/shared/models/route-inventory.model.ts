@@ -23,7 +23,8 @@ export interface IRouteInventory {
   destination?: string;
   driverName?: string;
   driverPhoneNo?: string;
-  regNumber: string;
+  regNumber?: string;
+  providerId?: string;
 }
 
 export interface IDeleteRouteResponse {
