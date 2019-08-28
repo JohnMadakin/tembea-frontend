@@ -51,8 +51,8 @@ export class AddDepartmentsModalComponent implements OnInit {
   }
 
   updateDepartment(department: IDepartmentsModel) {
-    const { name, location, email, oldName } = department;
-    this.departmentService.update(oldName, name, email, location).subscribe((res: IDepartmentResponse) => {
+    const { id, name, email } = department;
+    this.departmentService.update(id, name, email).subscribe((res: IDepartmentResponse) => {
       if (res.success) {
         this.refereshDepartment(res.message);
       }

@@ -76,7 +76,7 @@ export class DepartmentsComponent implements OnInit {
   editDepartment(department: IDepartmentsModel, name: string) {
     const departmentDetail = { ...department };
     departmentDetail.email = department['head.email'];
-    departmentDetail.oldName = name;
+    departmentDetail.name = name;
     this.dialog.open(AddDepartmentsModalComponent, {
       data: departmentDetail,
     });

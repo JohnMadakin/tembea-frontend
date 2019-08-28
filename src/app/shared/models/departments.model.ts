@@ -14,16 +14,13 @@ export class DepartmentsModel implements Deserializable<DepartmentsModel> {
 export interface IDepartmentsModel {
   id?: number;
   name?: string;
-  location?: string;
   lead?: string;
   status?: string;
   email?: string;
-  oldName?: string;
 }
 
 export class Department implements IDepartmentsModel {
   constructor(
-    public location?: string,
     public name?: string,
     public email?: string,
   ) {}

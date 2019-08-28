@@ -10,7 +10,7 @@
           <h2>Add a New Department</h2>
         </ng-container>
         <ng-template #editTitle>
-          <h2>Edit {{model.oldName}} Department</h2>
+          <h2>Edit {{model.name}} Department</h2>
         </ng-template>
 
         <div class="single-field">
@@ -35,26 +35,7 @@
         <div class="single-field">
           <div class="field single">
               <div class="input-group">
-                <label for="location">Where is it located?</label>
-                <input
-                id="location"
-                required
-                [(ngModel)]="model.location"
-                name="location"
-                pattern="^[a-zA-Z\s+-]+$"
-                [class.is_invalid]="location.invalid && location.touched"
-                #location="ngModel"/>
-                <div *ngIf="location.errors && (location.touched && location.invalid)">
-                  <small class="text-danger" *ngIf="location?.errors.required">location field is required</small>
-                  <small class="text-danger" *ngIf="location?.errors.pattern">location field cannot contain numeric values or symbols</small>
-                </div>
-            </div>
-          </div>
-        </div>
-        <div class="single-field">
-          <div class="field single">
-              <div class="input-group">
-                <label for="location">What's the manager’s email?</label>
+                <label for="email">What's the manager’s email?</label>
                 <input
                 required
                 id="email"
@@ -63,7 +44,7 @@
                 type="email"
                 email
                 [class.is_invalid]="email.invalid && email.touched"
-                #email=ngModel/>
+                #email="ngModel"/>
                 <div *ngIf="email.errors && (email.touched && email.invalid)">
                   <small class="text-danger" *ngIf="email?.errors.required">email field is required</small>
                   <small class="text-danger" *ngIf="email?.errors.email">email is invalid</small>
