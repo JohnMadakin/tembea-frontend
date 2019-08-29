@@ -9,13 +9,13 @@ import { IRider } from '../../shared/models/rider.model';
 import { Observable } from 'rxjs/Observable';
 import { DepartmentsService } from '../__services__/departments.service';
 import { HomeBaseManager } from '../../shared/homebase.manager';
+import { getStartAndEndDate } from '../../utils/helpers';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-
 export class DashboardComponent implements OnInit {
   dateFilters = {
     from: {},
@@ -23,11 +23,11 @@ export class DashboardComponent implements OnInit {
     startDate: { from: '' },
     endDate: { to: '' }
   };
-  mostUsedRoute: Object = {};
-  leastUsedRoute: Object = {};
+  mostUsedRoute: any;
+  leastUsedRoute: any;
   mostRatedRoutes = [];
   leastRatedRoutes = [];
-  maxDate = new Date();
+  maxDate: string | Date = new Date();
   averageRatings = 0;
   minDate: any;
   startingDate: any;
@@ -61,21 +61,17 @@ export class DashboardComponent implements OnInit {
   };
   tripData: { trip: any[], tripsCost: number[], departmentNames: string[] } = {
     trip: [
-      {
-        label: 'Line Dataset',
-        data: [],
-        type: 'line'
-      },
-      {
-        data: [],
-        label: 'Trips',
-        type: 'bar'
-      },
+      { label: 'Line Dataset', data: [], type: 'line' },
+      { data: [], label: 'Trips', type: 'bar' },
     ],
     tripsCost: [],
     departmentNames: []
   };
   homebaseId: string;
+  startInitialDate: string;
+  endInitialDate: string;
+  startDateMax: string;
+  endDateMax: string;
 
   constructor(
     private routeUsageService: RouteUsageService,
@@ -97,10 +93,16 @@ export class DashboardComponent implements OnInit {
     this.getAirportTransfers();
     this.getEmbassyVisits();
     this.getTripsAnalysis();
-    this.dateFilters = { from: {}, to: {}, startDate: { from: '' }, endDate: { to: '' } };
     this.getDepartments();
-  }
 
+    // populate date picker
+    const [ startDate, endDate ] = getStartAndEndDate();
+    this.startInitialDate = startDate;
+    this.endInitialDate = endDate;
+
+    this.startDateMax = moment(this.startInitialDate).format('YYYY-MM-DD');
+    this.endDateMax = moment().format('YYYY-MM-DD');
+  }
 
   setDateFilter(field: string, range: 'from' | 'to', date: string) {
     const fieldObject = this.dateFilters[field] || {};

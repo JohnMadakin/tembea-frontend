@@ -9,9 +9,7 @@ export class RoutesOverviewComponent implements OnInit {
 
   @Input() data: any;
   @Input() usage: string;
-  constructor() { }
 
   ngOnInit() {
   }
-
 }

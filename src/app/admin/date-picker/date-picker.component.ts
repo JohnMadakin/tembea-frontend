@@ -19,13 +19,14 @@ export class DatePickerComponent implements OnInit {
   @Input() maxDate;
   @Input() minDate;
   @Input() previous: boolean;
+  @Input() type: string;
+
+  @Input() initialDate: string;
   constructor() {
   }
-
   ngOnInit() {
-    const date = this.previous ? moment() : moment().subtract(7, 'days');
-    this.model.selectedDate = date.format('DD MMMM, YYYY');
-    this.selectedDateChange.emit(date.format(this.dateFormat));
+    this.model.selectedDate = this.initialDate;
+    this.selectedDateChange.emit(moment(this.model.selectedDate).format('YYYY-MM-DD'));
   }
 
   update(event: MatDatepickerInputEvent<Date>) {

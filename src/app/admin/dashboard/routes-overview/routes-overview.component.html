@@ -3,7 +3,7 @@
     {{usage}} Used Route
   </mat-card-title>
   <mat-card-content  class="center">
-    <div>
+    <div *ngIf="data">
       <p id="route_name">{{ data.Route | shortenText: 7 }} {{data.RouteBatch}}</p>
       <p id="route_use">
         {{data.percentageUsage}}% used

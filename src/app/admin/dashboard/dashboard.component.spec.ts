@@ -4,6 +4,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material';
 import { of } from 'rxjs/observable/of';
+import * as moment from 'moment';
 import { RouteUsageService } from '../__services__/route-usage.service';
 import routeUsageMock from '../__services__/__mocks__/routeUsageMock';
 import { RouteRatingsService } from '../__services__/route-ratings.service';

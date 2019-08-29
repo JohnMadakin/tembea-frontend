@@ -6,13 +6,15 @@
     <div fxLayoutGap="13.5px" fxLayout.lt-sm="column wrap" class="date-picker">
       <app-date-picker
         (selectedDateChange)="setDateFilter('startDate', 'from', $event)"
-        [maxDate]="maxDate">
+        [initialDate]="startInitialDate"
+        [maxDate]="startDateMax">
       </app-date-picker>
 
       <app-date-picker
         (selectedDateChange)="setDateFilter('endDate', 'to', $event)"
+        [initialDate]="endInitialDate"
         [minDate]="minDate"
-        [maxDate]="maxDate">
+        [maxDate]="endDateMax">
       </app-date-picker>
     </div>
   </div>
