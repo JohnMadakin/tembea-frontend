@@ -91,6 +91,7 @@ import { TripPieChartComponent } from './dashboard/trip-pie-chart/trip-pie-chart
 import { RouteTripsComponent } from './routes/route-trips/route-trips.component';
 import { TripsLineChartComponent } from './dashboard/trips-line-chart/trips-line-chart.component';
 import { TripBarChartComponent } from './dashboard/trip-bar-chart/trip-bar-chart.component';
+import { TripAwaitManagerApprovalComponent } from './trips/trip-await-manager-approval/trip-await-manager-approval.component';
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -164,6 +165,7 @@ import { TripBarChartComponent } from './dashboard/trip-bar-chart/trip-bar-chart
     RouteTripsComponent,
     UpdateTripProviderModalComponent,
     TripBarChartComponent,
+    TripAwaitManagerApprovalComponent,
   ],
   imports: [
     CommonModule,

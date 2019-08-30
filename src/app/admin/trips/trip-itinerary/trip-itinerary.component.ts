@@ -8,6 +8,7 @@ import { AlertService } from '../../../shared/alert.service';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { DisplayTripModalComponent } from '../display-trip-modal/display-trip-modal.component';
 import { ProviderService } from '../../__services__/providers.service';
+import { getStartAndEndDate } from '../../../utils/helpers';
 
 
 
@@ -44,6 +45,10 @@ export class TripItineraryComponent implements OnInit {
   @Output()
   tripTotalEventEmitter = new EventEmitter();
   noCab = false;
+  startInitialDate: string;
+  endInitialDate: string;
+  startDateMax: string;
+  endDateMax: string;
 
   constructor(
     private tripRequestService: TripRequestService,
@@ -76,10 +81,21 @@ export class TripItineraryComponent implements OnInit {
       case 'all':
         this.status = null;
         break;
+      case 'awaitingApproval':
+        this.status = 'Pending';
+        break;
       default:
         this.status = 'Confirmed';
         break;
     }
+
+    // populate date picker
+    const [startDate, endDate] = getStartAndEndDate();
+    this.startInitialDate = startDate;
+    this.endInitialDate = endDate;
+    this.startDateMax = moment().format('YYYY-MM-DD');
+    this.endDateMax = moment().format('YYYY-MM-DD');
+
     this.getTrips(this.status);
     this.getDepartments();
   }
@@ -100,6 +116,7 @@ export class TripItineraryComponent implements OnInit {
     this.loading = true;
     const tripStatus = this.tripRequestType === 'pastTrips' ? null : status;
     const { page, pageSize: size, departmentName: department, dateFilters } = this;
+    console.log('date_filters: ', this.dateFilters);
     this.tripRequestService.query({ page, size, status: tripStatus, department, type: this.tripType, dateFilters, noCab: this.noCab })
       .subscribe(tripData => {
         const { pageInfo, trips } = tripData;

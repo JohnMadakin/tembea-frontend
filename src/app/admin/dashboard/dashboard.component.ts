@@ -98,7 +98,7 @@ export class DashboardComponent implements OnInit {
     const [ startDate, endDate ] = getStartAndEndDate();
     this.startInitialDate = startDate;
     this.endInitialDate = endDate;
-    this.startDateMax = moment(this.startInitialDate).format('YYYY-MM-DD');
+    this.startDateMax = moment().format('YYYY-MM-DD');
     this.endDateMax = moment().format('YYYY-MM-DD');
   }
 
@@ -106,9 +106,8 @@ export class DashboardComponent implements OnInit {
     const fieldObject = this.dateFilters[field] || {};
     this.dateFilters[field] = { ...fieldObject, [range]: date };
     this.loadComponents();
-    this.dateFilters = { from: {}, to: {}, startDate: { from: '' }, endDate: { to: '' } };
-    this.getDepartments();
-    this.getFrequentRiders();
+    this.startingDate = this.dateFilters.startDate.from ? moment(this.dateFilters.startDate.from).format('YYYY-MM-DD') : '';
+    this.minDate = this.startingDate;
   }
 
   loadComponents() {
@@ -119,6 +118,7 @@ export class DashboardComponent implements OnInit {
     this.getEmbassyVisits();
     this.getTripsAnalysis();
     this.getFrequentRiders();
+    this.getDepartments();
   }
 
   getRoutesUsage() {

@@ -34,6 +34,9 @@ export class TripNavComponent implements OnInit {
       case 'Confirmed':
         broadcastPayload = { tooltipTitle: event.tab.textLabel, badgeSize: this.data.confirmed.totalItems };
         break;
+      case 'Awaiting Approval':
+        broadcastPayload = { tooltipTitle: event.tab.textLabel, badgeSize: this.data.awaitingApproval.totalItems };
+        break;
       case 'Pending':
         broadcastPayload = { tooltipTitle: event.tab.textLabel, badgeSize: this.data.pending.totalItems };
         break;

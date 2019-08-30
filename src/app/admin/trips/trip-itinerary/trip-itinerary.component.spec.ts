@@ -227,6 +227,13 @@ describe('TripItineraryComponent', () => {
       expect(tripRequestService.query).toHaveBeenCalled();
     });
   });
+  describe('Awaiting manager approval trips', () => {
+    it('should get trips awaiting for manager approval', () => {
+      component.tripRequestType = 'awaitingApproval';
+      component.ngOnInit();
+      expect(tripRequestService.query).toHaveBeenCalled();
+    });
+  });
   describe('Get Past Trips', () => {
     it('return only valid past trips', () => {
       const pastTrips = component.getPastTrips(pastTripMock);
