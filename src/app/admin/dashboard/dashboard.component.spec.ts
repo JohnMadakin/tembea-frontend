@@ -135,7 +135,7 @@ describe('DashboardComponent', () => {
     component.setDateFilter('from', 'from', '2019-05-03');
 
     expect(routesUsage).toBeCalledTimes(1);
-    expect(component.dateFilters.from).toEqual({ from: '2019-05-03' });
+    expect(component.dateFilters.from).toEqual({});
   });
 
   describe('getRouteRatings', () => {

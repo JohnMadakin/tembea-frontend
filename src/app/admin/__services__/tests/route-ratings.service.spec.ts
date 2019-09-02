@@ -33,4 +33,13 @@ describe('RouteRatingsService', () => {
     });
     expect(ratings).toEqual(mockRouteRatings);
   });
+
+  it('should return empty array route ratings', () => {
+    let ratings = null;
+    jest.spyOn(HttpClient.prototype, 'get').mockReturnValue(of(mockRouteRatings));
+    service.getRouteAverages({ startDate: { from: '' }, endDate: { to: '' } }).subscribe(res => {
+      ratings = res;
+    });
+    expect(ratings).toEqual(mockRouteRatings);
+  });
 });
