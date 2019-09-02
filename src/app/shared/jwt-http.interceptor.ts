@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth/__services__/auth.service';
 import { AlertService } from './alert.service';
 import { HomeBaseManager } from './homebase.manager';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class JwtHttpInterceptor implements HttpInterceptor {
@@ -21,7 +22,8 @@ export class JwtHttpInterceptor implements HttpInterceptor {
     const { tembeaToken } = this.authService;
     if (!request.url.includes('/auth/verify') && tembeaToken) {
       const homebaseid = this.hbManager.getHomebaseId();
-      const authReq = request.clone({ setHeaders: { Authorization: tembeaToken, homebaseid } });
+      const authReq = request.clone({ setHeaders: {
+        Authorization: tembeaToken, homebaseid , teamurl: environment.teamUrl} });
 
       return next.handle(authReq).pipe(
         catchError((error: HttpErrorResponse) => {

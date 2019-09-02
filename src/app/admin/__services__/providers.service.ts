@@ -11,9 +11,7 @@ import { CreateDriverModel} from '../../shared/models/driver.model';
 export class ProviderService {
 
   providersUrl = `${environment.tembeaBackEndUrl}/api/v1/providers`;
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+
   constructor(
     private http: HttpClient,
   ) { }
