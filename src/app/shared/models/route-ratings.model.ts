@@ -4,3 +4,10 @@ export interface RouteRatingsModel {
   Route: string;
   NumberOfRatings: number;
 }
+
+export interface IRouteUsageModel {
+  Route: string;
+  RouteBatch: string;
+  percentageUsage: number;
+  users: number;
+}

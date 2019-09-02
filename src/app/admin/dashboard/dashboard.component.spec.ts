@@ -184,14 +184,6 @@ describe('DashboardComponent', () => {
       component.setDateFilter('from', 'from', '2019-05-03');
       expect(component.getTripsData).toHaveBeenCalled();
     });
-
-    it('should set riders list', () => {
-      let result;
-      component.riders$.subscribe(data => {
-        result = data;
-      });
-      expect(result).toEqual(riders);
-    });
   });
 
   describe('Airport Transfers', () => {

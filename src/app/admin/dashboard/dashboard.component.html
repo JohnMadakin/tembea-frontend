@@ -70,7 +70,7 @@
           <h3 class="routes-title">ROUTES OVERVIEW</h3>
         </div>
         <div class="most-ratings-usage" >
-          <div fxLayout="row" fxLayout.xs="column"  fxLayoutAlign="center" >
+          <div fxLayout="row" fxLayout.xs="column"  fxLayoutAlign="center" *ngIf="mostUsedRoute">
             <app-routes-overview usage="Most" [data]="mostUsedRoute"></app-routes-overview>
             <app-route-ratings-overview
               [title]="'Most Rated Routes'"
@@ -78,20 +78,20 @@
             </app-route-ratings-overview>
             <app-rider-list class="card-position"
               title="Most Frequent Riders"
-              [riders$]="riders$">
+              [riders$]="mostFrequentRiders">
             </app-rider-list>
           </div>
         </div>
 
         <div>
-          <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center">
+          <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" *ngIf="leastUsedRoute">
             <app-routes-overview usage="Least" [data]="leastUsedRoute"></app-routes-overview>
             <app-route-ratings-overview
               [title]="'Least Rated Routes'"
               [ratings]="leastRatedRoutes">
             </app-route-ratings-overview>
             <app-rider-list class="card-position"
-              [riders$]="riders$"
+              [riders$]="leastFrequentRiders"
               title="Least Frequent Riders">
             </app-rider-list>
           </div>

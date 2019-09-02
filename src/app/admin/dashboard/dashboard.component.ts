@@ -5,11 +5,11 @@ import { RouteRatingsService } from '../__services__/route-ratings.service';
 import { TripsDataService } from '../__services__/trips-data.service';
 import { ITripsDataModel } from '../../shared/models/trips-data.model';
 import { RiderService } from './rider-list/rider.service';
-import { IRider } from '../../shared/models/rider.model';
-import { Observable } from 'rxjs/Observable';
 import { DepartmentsService } from '../__services__/departments.service';
 import { HomeBaseManager } from '../../shared/homebase.manager';
 import { getStartAndEndDate } from '../../utils/helpers';
+import { getRiderList } from 'src/app/utils/helpers';
+import { IRouteUsageModel } from 'src/app/shared/models/route-ratings.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,8 +23,8 @@ export class DashboardComponent implements OnInit {
     startDate: { from: '' },
     endDate: { to: '' }
   };
-  mostUsedRoute: any;
-  leastUsedRoute: any;
+  mostUsedRoute: IRouteUsageModel;
+  leastUsedRoute: IRouteUsageModel;
   mostRatedRoutes = [];
   leastRatedRoutes = [];
   maxDate: string | Date = new Date();
@@ -33,7 +33,6 @@ export class DashboardComponent implements OnInit {
   startingDate: any;
   tripsData: Array<ITripsDataModel> = [];
   totalCost: number;
-  riders$: Observable<IRider[]> = this.riderService.getRiders();
   airportRatings: number;
   totalAirportTrips: number;
   averageEmbassyRatings: any;
@@ -56,9 +55,7 @@ export class DashboardComponent implements OnInit {
         data: [],
         label: 'Embassy Visits',
         tripsCost: [],
-      },
-    ],
-  };
+      }, ], };
   tripData: { trip: any[], tripsCost: number[], departmentNames: string[] } = {
     trip: [
       { label: 'Line Dataset', data: [], type: 'line' },
@@ -72,6 +69,8 @@ export class DashboardComponent implements OnInit {
   endInitialDate: string;
   startDateMax: string;
   endDateMax: string;
+  mostFrequentRiders = [];
+  leastFrequentRiders = [];
 
   constructor(
     private routeUsageService: RouteUsageService,
@@ -99,7 +98,6 @@ export class DashboardComponent implements OnInit {
     const [ startDate, endDate ] = getStartAndEndDate();
     this.startInitialDate = startDate;
     this.endInitialDate = endDate;
-
     this.startDateMax = moment(this.startInitialDate).format('YYYY-MM-DD');
     this.endDateMax = moment().format('YYYY-MM-DD');
   }
@@ -107,14 +105,20 @@ export class DashboardComponent implements OnInit {
   setDateFilter(field: string, range: 'from' | 'to', date: string) {
     const fieldObject = this.dateFilters[field] || {};
     this.dateFilters[field] = { ...fieldObject, [range]: date };
+    this.loadComponents();
+    this.dateFilters = { from: {}, to: {}, startDate: { from: '' }, endDate: { to: '' } };
+    this.getDepartments();
+    this.getFrequentRiders();
+  }
+
+  loadComponents() {
     this.getRoutesUsage();
     this.getRouteRatings();
-    this.startingDate = this.dateFilters.startDate.from ? moment(this.dateFilters.startDate.from).format('YYYY-MM-DD') : '';
-    this.minDate = this.startingDate;
     this.getTripsData();
     this.getAirportTransfers();
     this.getEmbassyVisits();
     this.getTripsAnalysis();
+    this.getFrequentRiders();
   }
 
   getRoutesUsage() {
@@ -155,8 +159,7 @@ export class DashboardComponent implements OnInit {
         this.averageRatings = finalAverageRating * 20; // convert to percentage then divide by 5 for the 5 stars
         this.plotBarChart(trips);
       });
-    }
-  }
+    }}
 
   getAirportTransfers() {
     if (this.dateFilters.startDate.from && this.dateFilters.endDate.to) {
@@ -166,8 +169,7 @@ export class DashboardComponent implements OnInit {
         this.totalAirportTrips = this.totalTripsCount(trips);
         this.plotTravelTripsAnalytics(trips, 0);
       });
-    }
-  }
+    }}
 
   getEmbassyVisits() {
     if (this.dateFilters.startDate.from && this.dateFilters.endDate.to) {
@@ -177,8 +179,7 @@ export class DashboardComponent implements OnInit {
         this.EmbassyVisits = this.totalTripsCount(trips);
         this.plotTravelTripsAnalytics(trips, 1);
       });
-    }
-  }
+    }}
 
   getTripsAnalysis() {
     if (this.dateFilters.from && this.dateFilters.to) {
@@ -190,8 +191,7 @@ export class DashboardComponent implements OnInit {
         const { data: { trips } } = res;
         this.normalTripCount = this.totalTripsCount(trips);
       });
-    }
-  }
+    }}
 
   getDepartments() {
     this.departmentsService.get(5, 1).subscribe(res => {
@@ -200,7 +200,6 @@ export class DashboardComponent implements OnInit {
 
       this.tripsDataSet.labels = [weekOfMonth, ...departments];
       this.tripData.departmentNames = [...departments];
-
       const labelsLength = this.tripsDataSet.labels.length;
       const tripLabelLength = this.tripData.departmentNames.length;
 
@@ -211,7 +210,6 @@ export class DashboardComponent implements OnInit {
       this.tripsDataSet.travel[0].tripsCost = [...zeroData];
       this.tripsDataSet.travel[1].data = [...zeroData];
       this.tripsDataSet.travel[1].tripsCost = [...zeroData];
-
       this.tripData.tripsCost = [...tripZeroData];
       this.tripData.trip[0].data = [...tripZeroData];
       this.tripData.trip[1].data = [...tripZeroData];
@@ -240,7 +238,6 @@ export class DashboardComponent implements OnInit {
 
       newTravelData[index] = parseInt(trip.totalTrips, 0);
       newTravelCost[index] = parseInt(trip.totalCost || 0, 0);
-
       this.tripsDataSet.travel[dataIndex].data = [...newTravelData];
       this.tripsDataSet.travel[dataIndex].tripsCost = [...newTravelCost];
     });
@@ -264,7 +261,6 @@ export class DashboardComponent implements OnInit {
         const [...dataLabels] = labels;
         labels = [...this.departments, ...dataLabels].filter(onlyUnique);
       }
-
       newTotalCost.push(+tripInfo.totalCost);
       newTotalTrip.push(+tripInfo.totalTrips);
     });
@@ -277,4 +273,13 @@ export class DashboardComponent implements OnInit {
     }
     this.tripData.departmentNames = labels;
   }
+
+  getFrequentRiders() {
+    if (this.dateFilters.from && this.dateFilters.to) {
+      this.riderService.getRiders(this.dateFilters).subscribe(res => {
+        const { firstFiveMostFrequentRiders, leastFiveFrequentRiders } = res.data;
+        this.mostFrequentRiders = getRiderList(firstFiveMostFrequentRiders);
+        this.leastFrequentRiders = getRiderList(leastFiveFrequentRiders);
+    });
+  }}
 }

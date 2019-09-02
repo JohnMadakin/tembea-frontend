@@ -1,5 +1,6 @@
 import * as moment from 'moment';
 import { DAYS } from '../shared/models/datepicker.model';
+import {IRider} from '../shared/models/rider.model';
 
 export const createDialogOptions = (data, width = '512px', _class = 'small-modal-panel-class') => {
   return {
@@ -30,4 +31,24 @@ export const getStartAndEndDate = (day = moment().day()): string[] => {
   return [startDate, endDate];
 };
 
+export const formatCurrentDate = () => {
+  const today = new Date();
+  const  dd = String(today.getDate()).padStart(2, '0');
+  const  mm = String(today.getMonth() + 1).padStart(2, '0');
+  const  yyyy = today.getFullYear();
+  const formattedDate = yyyy + '-' + mm + '-' + dd;
+  return  formattedDate ;
+};
 
+export const getRiderList = (data: IRider[]) => {
+  return data.map(rider => {
+    const {
+      picture,
+      user: { name },
+      batchRecord: {
+        batch: { route }
+      }
+    } = rider;
+    return { picture, name, routeName: route.name };
+  });
+};

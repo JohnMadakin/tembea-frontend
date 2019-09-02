@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {Observable} from 'rxjs';
-import {IRider} from '../../../shared/models/rider.model';
+import {IDeserializedRider} from '../../../shared/models/rider.model';
 
 @Component({
   selector: 'app-rider-list',
@@ -9,10 +8,8 @@ import {IRider} from '../../../shared/models/rider.model';
 })
 export class RiderListComponent implements OnInit {
   @Input() title: string;
-  @Input() riders$: Observable<IRider[]>;
+  @Input() riders$: IDeserializedRider[];
   constructor() { }
 
   ngOnInit() { }
-
-
 }
