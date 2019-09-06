@@ -77,7 +77,9 @@ export class RoutesInventoryComponent implements OnInit, OnDestroy {
 
   getSearchResults = () => {
     this.isLoading = true;
-    this.searchService.searchData(this.searchTerm$, 'routes').subscribe(routesData => {
+    const {sort, pageSize, pageNo} = this;
+    const defaultTerm = `sort=${sort}&size=${pageSize}&page=${pageNo}`;
+    this.searchService.searchData(this.searchTerm$, 'routes', defaultTerm).subscribe(routesData => {
         const { routes, pageMeta } = routesData;
         this.routes = routes;
         this.totalItems = pageMeta.totalResults;

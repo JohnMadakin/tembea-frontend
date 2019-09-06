@@ -99,4 +99,17 @@ describe('SearchService', () => {
       done();
     });
   });
+  it('should return an array of search query and trimmed term', done => {
+    const [routesQuery, searchTerm] = searchService.getQueryAndTerm('routes', 'term');
+    expect(routesQuery).toEqual('routes?name=');
+    expect(searchTerm).toEqual('term');
+    done();
+  });
+  it('should return an array of search query and default term', done => {
+    const defaultTerm = 'sort=name,asc,batch,asc&size=20&page=1';
+    const [routesQuery, searchTerm] = searchService.getQueryAndTerm('routes', ' ', defaultTerm);
+    expect(routesQuery).toEqual('routes?');
+    expect(searchTerm).toEqual(defaultTerm);
+    done();
+  });
 });

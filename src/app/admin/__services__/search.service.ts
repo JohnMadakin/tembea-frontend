@@ -23,14 +23,24 @@ export class SearchService {
     private auth: AuthService,
   ) { }
 
-  searchData(terms: Observable<string>, status: string) {
-    const routesQuery = `${status}?name=`;
+  searchData(terms: Observable<string>, status: string, defaultTerm?: string) {
     return terms.debounceTime(1000)
       .distinctUntilChanged()
-      .switchMap(term => this.searchItems(routesQuery, term.trim()))
+      .switchMap(term => {
+        const trimmedTerm = term.trim();
+        const [routesQuery, searchTerm] = this.getQueryAndTerm(status, trimmedTerm, defaultTerm);
+        return this.searchItems(routesQuery, searchTerm);
+      })
       .map(items => {
         return items.data;
       });
+  }
+
+  getQueryAndTerm(status: string, trimmedTerm: string, defaultTerm?: string) {
+    if (/^[A-Z0-9]/ig.test(trimmedTerm)) {
+      return [`${status}?name=`, trimmedTerm];
+    }
+    return [`${status}?`, defaultTerm];
   }
 
   searchItems(resourceEndpoint, term): Observable<any> {
