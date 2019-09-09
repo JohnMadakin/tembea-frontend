@@ -1,3 +1,42 @@
+const driverMock = {
+  id: 2,
+        driverName: 'Jack Black',
+        driverPhoneNo: '908989098',
+        driverNumber: '254235',
+        providerId: 2,
+        email: 'deo@gmail.com',
+};
+
+const cabDetailsMock = {
+  id: 2,
+  regNumber: 'LND 419 CN',
+  capacity: 4,
+  model: 'toyota',
+  providerId: 1
+};
+
+const homebaseMock = {
+  id: 1,
+  homebaseName: 'Nairobi',
+  country: {
+    name: 'Kenya',
+    id: 1,
+    status: 'Active'
+  }
+};
+
+const routeMock = {
+  id: 1004,
+  name: 'Jones Spring',
+  imageUrl: null,
+  destinationId: 1004,
+  homebaseId: 1,
+  destination: {
+    id: 1004,
+    address: '2081 Kuhlman Route',
+  }
+};
+
 const getRoutesResponseMock = {
     pageMeta: {
       totalPages: 20,
@@ -12,13 +51,12 @@ const getRoutesResponseMock = {
         takeOff: '03:00',
         capacity: 8,
         batch: 'E',
-        comments: 'dvdvdvdvdvv.',
         inUse: 4,
-        name: 'Gdvdvdvdvth',
-        destination: '89772 Hilpert Cove',
-        driverName: 'Ludvdvdvbs',
-        driverPhoneNo: '692.7444499.6133',
-        regNumber: 'APP 519 DT',
+        route: routeMock,
+        cabDetails: cabDetailsMock,
+        driver: driverMock,
+        homebase: homebaseMock,
+        riders: []
       },
       {
         id: 2,
@@ -28,11 +66,10 @@ const getRoutesResponseMock = {
         batch: 'D',
         comments: 'Ipsum discdc molestiae.',
         inUse: 0,
-        name: 'Ga22h',
-        destination: 'efvdvdvd',
-        driverName: 'Luke Hobcdvdvbs',
-        driverPhoneNo: '69552.799.6133',
-        regNumber: 'APPscs5 519 DT',
+        route: routeMock,
+        cabDetails: cabDetailsMock,
+        driver: driverMock,
+        homebase: homebaseMock
       },
       {
         id: 3,
@@ -42,11 +79,10 @@ const getRoutesResponseMock = {
         batch: 'A',
         comments: 'molestiae.',
         inUse: 1,
-        name: 'Path',
-        destination: 'dvdvdvdv ve',
-        driverName: 'Hobbs',
-        driverPhoneNo: '692.799.61553',
-        regNumber: 'APscscP 519 DTttt',
+        route: routeMock,
+        cabDetails: cabDetailsMock,
+        driver: driverMock,
+        homebase: homebaseMock
         },
         {
           id: 4,
@@ -56,11 +92,10 @@ const getRoutesResponseMock = {
           batch: 'E',
           comments: 'dvdv molestiae.',
           inUse: 0,
-          name: 'yledvdvth',
-          destination: 'dvdv897dvdvdv72  Cove',
-          driverName: 'Le Hodvdvbbs',
-          driverPhoneNo: '692.7959.6133',
-          regNumber: 'APscsc5P 519 DT',
+          route: routeMock,
+          cabDetails: cabDetailsMock,
+          driver: driverMock,
+          homebase: homebaseMock
         },
         {
           id: 5,
@@ -70,11 +105,10 @@ const getRoutesResponseMock = {
           batch: 'P',
           comments: 'Ipdvdvdvsue.',
           inUse: 5,
-          name: 'Garr',
-          destination: '89dvvdvdv7ve',
-          driverName: 'Lukbs',
-          driverPhoneNo: '692688133',
-          regNumber: 'AP1scscdvdv9 DT',
+          route: routeMock,
+          cabDetails: cabDetailsMock,
+          driver: driverMock,
+          homebase: homebaseMock
         }
     ]
 };

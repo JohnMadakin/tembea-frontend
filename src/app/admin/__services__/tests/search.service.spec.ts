@@ -91,7 +91,7 @@ describe('SearchService', () => {
   it('searchItems should make http request to get list of routes batches', done => {
     const httpSpy = jest.spyOn(HttpClient.prototype, 'get');
     httpSpy.mockReturnValue(of(getRoutesResponseMock));
-    const endpointUrl = `${environment.tembeaBackEndUrl}/api/v1/routes?name`;
+    const endpointUrl = `${environment.tembeaBackEndUrl}/api/v2/routes?name`;
     const searchTerm = 'hello';
     const result = searchService.searchItems(endpointUrl, searchTerm);
     result.subscribe(data => {

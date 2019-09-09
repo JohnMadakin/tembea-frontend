@@ -5,7 +5,6 @@ import { AlertService } from 'src/app/shared/alert.service';
 import { environment } from '../../../environments/environment';
 import { AppTestModule } from '../../__tests__/testing.module';
 import routeTripsResponseMock from '../routes/route-trips/__mocks__/routeTrips.mock';
-import { throwError, of } from 'rxjs';
 
 describe('RouteTripsService', () => {
   let injector: TestBed;
@@ -44,7 +43,7 @@ describe('RouteTripsService', () => {
         done();
       });
 
-    const routeTripsUrl = `${environment.tembeaBackEndUrl}/api/v1/trips/routetrips?page=1&size=10`;
+    const routeTripsUrl = `${environment.tembeaBackEndUrl}/api/v2/trips/routetrips?page=1&size=10`;
     const req = httpMock.expectOne(routeTripsUrl);
     expect(req.request.method).toEqual('GET');
     req.flush(serviceResponse);
@@ -61,11 +60,11 @@ describe('RouteTripsService', () => {
       .subscribe(() => {}, err => {
         expect(service.handleError).toHaveBeenCalled();
         expect(err)
-          .toEqual('Http failure response for http://localhost:5000/api/v1/trips/routetrips?page=1&size=10: 500 server error');
+          .toEqual('Http failure response for http://localhost:5000/api/v2/trips/routetrips?page=1&size=10: 500 server error');
         done();
       });
 
-    const routeTripsUrl = `${environment.tembeaBackEndUrl}/api/v1/trips/routetrips?page=1&size=10`;
+    const routeTripsUrl = `${environment.tembeaBackEndUrl}/api/v2/trips/routetrips?page=1&size=10`;
     const req = httpMock.expectOne(routeTripsUrl);
     expect(req.request.method).toEqual('GET');
     req.error(new ErrorEvent('server error'), { status: 500, statusText: 'server error' });

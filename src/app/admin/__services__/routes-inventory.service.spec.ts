@@ -51,18 +51,17 @@ describe('Service Tests', () => {
         service
           .getRoutes(size, page, sort)
           .subscribe(result => {
-            expect(result).toEqual(expected);
+            expect(result.data).toEqual(expected);
             done();
           });
 
-        const url = `${environment.tembeaBackEndUrl}/api/v1/routes?sort=${sort}&size=${size}&page=${page}`;
+        const url = `${environment.tembeaBackEndUrl}/api/v2/routes?sort=${sort}&size=${size}&page=${page}`;
         const req = httpMock.expectOne(url);
         expect(req.request.url).toBe(url);
 
         req.flush({ data: returnedFromService });
         httpMock.verify();
       });
-
     });
 
     afterEach(() => {

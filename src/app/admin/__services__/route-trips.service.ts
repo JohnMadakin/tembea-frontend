@@ -17,12 +17,14 @@ export interface IRouteTripsData {
 })
 export class RouteTripsService {
   routeTripsUrl: string;
+  routeTripsV2Url: string;
   constructor(private http: HttpClient, public toastr: AlertService) {
     this.routeTripsUrl = `${environment.tembeaBackEndUrl}/api/v1/trips/routetrips`;
+    this.routeTripsV2Url = `${environment.tembeaBackEndUrl}/api/v2/trips/routetrips`;
   }
 
   getBatchTripsRecords({ page, pageSize }: { page: number; pageSize: number; }): Observable<IRouteTripsData> {
-    return this.http.get<any>(`${this.routeTripsUrl}?page=${page}&size=${pageSize}`)
+    return this.http.get<any>(`${this.routeTripsV2Url}?page=${page}&size=${pageSize}`)
       .pipe(map(res => res.data), catchError(err => this.handleError(err)));
   }
 

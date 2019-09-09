@@ -10,7 +10,7 @@ import { AuthService } from '../../auth/__services__/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
-  baseUrl = `${environment.tembeaBackEndUrl}/api/v1/`;
+  baseUrl = `${environment.tembeaBackEndUrl}/api/v2/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
