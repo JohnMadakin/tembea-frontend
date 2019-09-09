@@ -1,6 +1,8 @@
+import { BaseTableComponent } from '../../base-table/base-table.component';
 import { Component, OnInit } from '@angular/core';
 import { IRouteTrips } from '../../../shared/models/route-trips.model';
-import { RouteTripsService } from '../../../admin/__services__/route-trips.service';
+import { MatDialog } from '@angular/material';
+import { RouteTripsService } from '../../__services__/route-trips.service';
 import { AppEventService } from 'src/app/shared/app-events.service';
 
 @Component({
@@ -8,7 +10,7 @@ import { AppEventService } from 'src/app/shared/app-events.service';
   templateUrl: './route-trips.component.html',
   styleUrls: ['./route-trips.component.scss']
 })
-export class RouteTripsComponent implements OnInit {
+export class RouteTripsComponent extends BaseTableComponent implements OnInit {
   page: number;
   pageSize: number;
   totalItems: number;
@@ -17,10 +19,13 @@ export class RouteTripsComponent implements OnInit {
 
   constructor(
     private routeTripsService: RouteTripsService,
-    private appEventsService: AppEventService
+    private appEventsService: AppEventService,
+    public dialog: MatDialog,
     ) {
+    super(dialog);
     this.page = 1;
     this.pageSize = 10;
+    this.rowType = 'routeRecord';
   }
 
   ngOnInit() {

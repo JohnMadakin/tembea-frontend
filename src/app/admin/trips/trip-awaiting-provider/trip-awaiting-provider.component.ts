@@ -5,6 +5,7 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { UpdateTripProviderModalComponent } from '../update-trip-provider-modal/update-trip-provider-modal.component';
 import { TripRequest } from 'src/app/shared/models/trip-request.model';
 import { IProviderInventory } from 'src/app/shared/models/provider.model';
+import { BaseTableComponent } from '../../base-table/base-table.component';
 
 
 
@@ -66,7 +67,7 @@ export class TripAwaitingProviderComponent extends TripItineraryComponent implem
 
   viewTripDetails(trip: any, elem) {
     if (!this.isActionButton(elem)) {
-      super.viewTripDescription(trip);
+      super.viewRowDescription(trip);
     }
   }
 

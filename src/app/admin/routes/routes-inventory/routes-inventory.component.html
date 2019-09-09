@@ -33,20 +33,21 @@
             <div class="actions-icon"></div>
           </mat-grid-tile>
         </mat-grid-list>
-        <mat-grid-list *ngFor='let route of routes; index as ind' cols="8" rowHeight="3:1" class="table-row-item">
+        <mat-grid-list *ngFor='let routeBatch of routes; index as ind' cols="8" rowHeight="3:1" class="table-row-item">
+            <div (click)="viewRowDescription(routeBatch)">
             <mat-grid-tile class="route-name">
-              <div class="route-name-align" matTooltipPosition="below" matTooltip="{{ route.name }}">
-                {{ route.name | shortenName: { max: 10 } }}<span *ngIf="route.name.length > 10;">...</span>
+              <div class="route-name-align" matTooltipPosition="below" matTooltip="{{ routeBatch.route.name }}">
+                {{ routeBatch.route.name | shortenName: { max: 10 } }}<span *ngIf="routeBatch.route.name.length > 10;">...</span>
               </div>
             </mat-grid-tile>
-            <mat-grid-tile>{{ route.batch }}</mat-grid-tile>
-            <mat-grid-tile>{{ route.takeOff }}</mat-grid-tile>
-            <mat-grid-tile>{{ route.capacity }}</mat-grid-tile>
-            <mat-grid-tile>{{ route.inUse }}</mat-grid-tile>
-            <mat-grid-tile>{{ route.regNumber }}</mat-grid-tile>
-
-            <mat-grid-tile *ngIf='route.status === "Active" ; else inactive'>
-              <button class="active-status-button" (click)="changeRouteStatus(route.id, 'Inactive')">
+            <mat-grid-tile>{{ routeBatch.batch }}</mat-grid-tile>
+            <mat-grid-tile>{{ routeBatch.takeOff }}</mat-grid-tile>
+            <mat-grid-tile>{{ routeBatch.capacity }}</mat-grid-tile>
+            <mat-grid-tile>{{ routeBatch.inUse }}</mat-grid-tile>
+            <mat-grid-tile>{{ routeBatch.cabDetails?.regNumber | convertNullValue: 'NA' }}</mat-grid-tile>
+          </div>
+            <mat-grid-tile *ngIf='routeBatch.status === "Active" ; else inactive'>
+              <button class="active-status-button" (click)="changeRouteStatus(routeBatch.id, 'Inactive')">
               <span class="green-radio-wrapper">
                 <span class="green-radio">
                 </span>
@@ -56,7 +57,7 @@
             </mat-grid-tile>
             <ng-template #inactive>
               <mat-grid-tile>
-                <button class="inactive-status-button" (click)="changeRouteStatus(route.id, 'Active')">
+                <button class="inactive-status-button" (click)="changeRouteStatus(routeBatch.id, 'Active')">
                 <span class="white-radio-wrapper">
                   <span class="white-radio">
                   </span>
@@ -68,17 +69,17 @@
             <mat-grid-tile>
               <div class="flex">
                 <button class='edit-action-button'>
-                  <span class="edit-icon tooltip" (click)="editRoute(ind)">
+                  <span class="edit-icon tooltip" (click)="editRoute(routeBatch)">
                     <span class="show-on-right">Edit<i></i></span>
                   </span>
                 </button>
                 <button class='duplicate-action-button'>
-                  <span class="duplicate-icon tooltip" (click)="showCopyConfirmModal(route)">
+                  <span class="duplicate-icon tooltip" (click)="showCopyConfirmModal(routeBatch)">
                     <span class="show-on-left">Copy<i></i></span>
                   </span>
                 </button>
                 <button class='decline-action-button'>
-                  <span class="decline-icon tooltip" (click)='showDeleteModal(route.id)'>
+                  <span class="decline-icon tooltip" (click)='showDeleteModal(routeBatch.id)'>
                     <span class="show-on-left">Delete<i></i></span>
                   </span>
                 </button>

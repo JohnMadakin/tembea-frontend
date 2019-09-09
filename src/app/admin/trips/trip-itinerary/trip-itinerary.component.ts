@@ -5,10 +5,10 @@ import { TripRequest } from 'src/app/shared/models/trip-request.model';
 import { ITEMS_PER_PAGE } from 'src/app/app.constants';
 import { AppEventService } from '../../../shared/app-events.service';
 import { AlertService } from '../../../shared/alert.service';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
-import { DisplayTripModalComponent } from '../display-trip-modal/display-trip-modal.component';
+import { MatDialog } from '@angular/material';
 import { ProviderService } from '../../__services__/providers.service';
 import { getStartAndEndDate } from '../../../utils/helpers';
+import { BaseTableComponent } from '../../base-table/base-table.component';
 
 
 
@@ -21,11 +21,9 @@ import { getStartAndEndDate } from '../../../utils/helpers';
     '../../travel/airport-transfers/airport-transfers.component.scss'
   ],
 })
-export class TripItineraryComponent implements OnInit {
+export class TripItineraryComponent extends BaseTableComponent implements OnInit {
 
   @Input() tripRequestType: string;
-
-  @Input() tripType: string;
   tripRequests: TripRequest[] = [];
   departmentsRequest: any = [];
   page: number;
@@ -54,12 +52,13 @@ export class TripItineraryComponent implements OnInit {
     private tripRequestService: TripRequestService,
     public appEventService: AppEventService,
     private alertService: AlertService,
-    public dialog: MatDialog,
-    public providerService: ProviderService
+    public providerService: ProviderService,
+    public dialog: MatDialog ,
   ) {
+    super(dialog);
     this.pageSize = ITEMS_PER_PAGE;
     this.page = 1;
-    this.tripType = 'Regular Trip';
+    this.rowType = 'Regular Trip';
   }
   ngOnInit() {
     switch (this.tripRequestType) {
@@ -76,7 +75,7 @@ export class TripItineraryComponent implements OnInit {
       case 'awaitingProvider':
         this.noCab = true;
         this.status = null;
-        this.tripType = null;
+        this.rowType = null;
         break;
       case 'all':
         this.status = null;
@@ -117,7 +116,7 @@ export class TripItineraryComponent implements OnInit {
     const tripStatus = this.tripRequestType === 'pastTrips' ? null : status;
     const { page, pageSize: size, departmentName: department, dateFilters } = this;
     console.log('date_filters: ', this.dateFilters);
-    this.tripRequestService.query({ page, size, status: tripStatus, department, type: this.tripType, dateFilters, noCab: this.noCab })
+    this.tripRequestService.query({ page, size, status: tripStatus, department, type: this.rowType, dateFilters, noCab: this.noCab })
       .subscribe(tripData => {
         const { pageInfo, trips } = tripData;
         let newTrips = trips;
@@ -169,17 +168,6 @@ export class TripItineraryComponent implements OnInit {
     this.filterParams = {
       dateFilters, department: departmentName
     };
-  }
-
-  viewTripDescription(trip: any) {
-    this.dialog.open(DisplayTripModalComponent, {
-      height: '660px',
-      width: '592px',
-      data: {
-        tripInfo: trip,
-        closeText: 'Close'
-      }
-    });
   }
 
   checkTripRequestType(tripRequestType: string): boolean {

@@ -1,8 +1,10 @@
-import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { RoutesInventoryService } from '../../__services__/routes-inventory.service';
-import { IDeleteRouteResponse, IRouteInventory } from 'src/app/shared/models/route-inventory.model';
+import { IDeleteRouteResponse } from 'src/app/shared/models/route-inventory.model';
+import { IRouteBatch, IEditRouteBatch } from '../../../shared/models/route-inventory.model';
+import { BaseTableComponent } from '../../base-table/base-table.component';
 import { AlertService } from '../../../shared/alert.service';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
 import { MatDialog } from '@angular/material';
@@ -26,8 +28,8 @@ import { eventsModel, modelActions } from '../../../utils/analytics-helper';
   ],
   providers: [SearchService]
 })
-export class RoutesInventoryComponent implements OnInit, OnDestroy {
-  routes: IRouteInventory[] = [];
+export class RoutesInventoryComponent extends BaseTableComponent implements OnInit, OnDestroy {
+  routes: IRouteBatch[] = [];
   pageNo: number;
   pageSize: number;
   sort: string;
@@ -49,8 +51,10 @@ export class RoutesInventoryComponent implements OnInit, OnDestroy {
     public router: Router,
     public routeService: RoutesInventoryService,
   ) {
+    super(dialog);
     this.pageNo = 1;
     this.sort = 'name,asc,batch,asc';
+    this.rowType = 'routeBatch';
     this.pageSize = ITEMS_PER_PAGE;
     this.getSearchResults();
   }
@@ -66,7 +70,7 @@ export class RoutesInventoryComponent implements OnInit, OnDestroy {
   getRoutesInventory = () => {
     this.isLoading = true;
     this.routeService.getRoutes(this.pageSize, this.pageNo, this.sort).subscribe(routesData => {
-        const { routes, pageMeta } = routesData;
+        const { data: { routes, pageMeta } } = routesData;
         this.routes = this.renameRouteBatches(routes);
         this.totalItems = pageMeta.totalResults;
         this.appEventsService.broadcast({ name: 'updateHeaderTitle', content: { badgeSize: pageMeta.totalResults } });
@@ -95,7 +99,7 @@ export class RoutesInventoryComponent implements OnInit, OnDestroy {
       });
   }
 
-  renameRouteBatches(routes) {
+  renameRouteBatches(routes: IRouteBatch[]) {
     let renamedBatches = routes;
     if (routes.length > 0) {
       const renameBatchesObject = new RenameRouteBatch(routes, this.lastRoute);
@@ -115,11 +119,11 @@ export class RoutesInventoryComponent implements OnInit, OnDestroy {
     this.subscriptions.push(sub);
   }
 
-  showCopyConfirmModal(routeBatch: any) {
+  showCopyConfirmModal(routeBatch: IRouteBatch) {
     this.showDialog('copy this route', this.copyRouteBatch, routeBatch.id);
   }
 
-  async sendRequestToServer(routeBatchId) {
+  async sendRequestToServer(routeBatchId: number) {
     try {
       const response = await this.routeService.createRoute(routeBatchId, this.duplicate);
       this.createRouteHelper.notifyUser([response.message], 'success');
@@ -171,17 +175,11 @@ export class RoutesInventoryComponent implements OnInit, OnDestroy {
     this.showDialog('delete this batch', this.deleteRoute, routeBatchId);
   }
 
-  editRoute(index): void {
+  editRoute(routeBatch: IRouteBatch): void {
+    const { id, status, takeOff, capacity, batch, inUse, route: { name} } = routeBatch;
     this.dialog.open(RoutesInventoryEditModalComponent, {
-      data: <IRouteInventory>{
-        id: this.routes[index].id,
-        status: this.routes[index].status,
-        takeOff: this.routes[index].takeOff,
-        capacity: this.routes[index].capacity,
-        batch: this.routes[index].batch,
-        inUse: this.routes[index].inUse,
-        name: this.routes[index].name,
-        regNumber: this.routes[index].regNumber
+      data: <IEditRouteBatch> {
+        id, status, takeOff, capacity, batch, inUse, name
       }
     });
   }

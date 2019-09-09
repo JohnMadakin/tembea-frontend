@@ -1,6 +1,7 @@
+import { IEditRouteBatch } from './../../../../shared/models/route-inventory.model';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { IRouteInventory } from 'src/app/shared/models/route-inventory.model';
+import { IRouteBatch } from 'src/app/shared/models/route-inventory.model';
 import { RoutesInventoryService } from 'src/app/admin/__services__/routes-inventory.service';
 import { AlertService } from 'src/app/shared/alert.service';
 import { UpdatePageContentService } from 'src/app/shared/update-page-content.service';
@@ -19,7 +20,7 @@ export class RoutesInventoryEditModalComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<RoutesInventoryEditModalComponent>,
     public alert: AlertService,
-    @Inject(MAT_DIALOG_DATA) public data: IRouteInventory,
+    @Inject(MAT_DIALOG_DATA) public data: IEditRouteBatch,
     public routeService: RoutesInventoryService,
     private updatePage: UpdatePageContentService,
     private providerService: ProviderService,
@@ -43,12 +44,12 @@ export class RoutesInventoryEditModalComponent implements OnInit {
     });
   }
 
-  editRoute(data): void {
+  editRoute(data: IEditRouteBatch): void {
     this.loading = true;
     const { id, name, takeOff, capacity, batch, status } = this.data;
     const { providerId } = data;
 
-    const routeDetails: IRouteInventory = { name, takeOff, providerId, capacity, batch, status };
+    const routeDetails: IEditRouteBatch = { name, takeOff, providerId, capacity, batch, status };
     this.routeService.changeRouteStatus(id, routeDetails).subscribe((res) => {
       if (res.success) {
         this.updatePage.triggerSuccessUpdateActions('updateRouteInventory', res.message);

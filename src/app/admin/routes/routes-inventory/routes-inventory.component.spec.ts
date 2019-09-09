@@ -1,3 +1,4 @@
+import { ConvertNullValue } from './../../__pipes__/convert-nullValue.pipe';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { Router } from '@angular/router';
@@ -26,6 +27,8 @@ import { AppEventService } from '../../../shared/app-events.service';
 import { ShortenNamePipe } from '../../__pipes__/shorten-name.pipe';
 import { HomeBaseManager } from 'src/app/shared/homebase.manager';
 import { GoogleAnalyticsService } from '../../__services__/google-analytics.service';
+import {DisplayTripModalComponent} from '../../trips/display-trip-modal/display-trip-modal.component';
+import {CustomTitlecasePipe} from '../../__pipes__/custom-titlecase.pipe';
 
 describe('RoutesInventoryComponent', () => {
   let component: RoutesInventoryComponent;
@@ -45,7 +48,7 @@ describe('RoutesInventoryComponent', () => {
 
   const routesInventoryMock = {
     createRoute: jest.fn().mockResolvedValue({ message: 'Successfully created' }),
-    getRoutes: () => of(getRoutesResponseMock),
+    getRoutes: () => of({ data: getRoutesResponseMock }),
     changeRouteStatus: jest.fn().mockReturnValue(of({})),
     deleteRouteBatch: jest.fn().mockReturnValue(of({
       success: true,
@@ -54,7 +57,7 @@ describe('RoutesInventoryComponent', () => {
   };
 
   const searchServiceMock = {
-    searchData: () => of(getRoutesResponseMock),
+    searchData: () => of({ data: getRoutesResponseMock }),
     searchItems: jest.fn().mockReturnValue(of(getRoutesResponseMock)),
   };
 
@@ -75,6 +78,7 @@ describe('RoutesInventoryComponent', () => {
   };
 
   const mockMatDialogRef = {
+    open: jest.fn(),
     close: () => {
     },
   };
@@ -94,8 +98,11 @@ describe('RoutesInventoryComponent', () => {
         EmptyPageComponent,
         ConfirmModalComponent,
         AppPaginationComponent,
+        DisplayTripModalComponent,
         ExportComponent,
-        ShortenNamePipe
+        ShortenNamePipe,
+        ConvertNullValue,
+        CustomTitlecasePipe,
       ],
       providers: [
         { provide: MatDialogRef, useValue: mockMatDialogRef },
@@ -121,7 +128,7 @@ describe('RoutesInventoryComponent', () => {
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [ConfirmModalComponent]
+          entryComponents: [ConfirmModalComponent, DisplayTripModalComponent]
         }
       }).compileComponents();
 
@@ -262,10 +269,10 @@ describe('RoutesInventoryComponent', () => {
 
   describe('update routes data', () => {
     it('should return the updated routes ', () => {
-      component.routes = routesMock;
+      component.routes = getRoutesResponseMock.routes;
 
       component.updateRoutesData(1, 'Active');
-      expect(component.routes).not.toEqual(routesMock);
+      expect(component.routes).not.toEqual(getRoutesResponseMock.routes);
       expect(component.routes[0].status).toEqual('Active');
     });
   });
@@ -362,6 +369,15 @@ describe('RoutesInventoryComponent', () => {
       expect(component.getSearchResults).toHaveBeenCalled();
       expect(appServiceSpy).toHaveBeenCalled();
       expect(component.routes).toEqual(getRoutesResponseMock.routes);
+    }));
+  });
+
+  describe('viewRouteDescription', () => {
+    it('should open modal to view route details', ( async () => {
+      const dialogSpy = jest.spyOn(MatDialog.prototype, 'open');
+      await component.viewRowDescription(1);
+      fixture.detectChanges();
+      expect(dialogSpy).toBeCalledTimes(1);
     }));
   });
 

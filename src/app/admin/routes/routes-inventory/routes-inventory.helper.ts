@@ -1,12 +1,11 @@
-import { IRouteInventory } from '../../../shared/models/route-inventory.model';
-
+import { IRouteBatch } from '../../../shared/models/route-inventory.model';
 class RenameRouteBatch {
   routesList: Array<any>;
   renamedBatches = [];
   sameRoute = [];
   newCharArray = [];
   batchLetter: string;
-  lastRoute: IRouteInventory;
+  lastRoute: IRouteBatch;
 
   constructor(
     routes: Array<any>,

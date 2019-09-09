@@ -19,7 +19,6 @@ import { UpdateTripProviderModalComponent } from '../update-trip-provider-modal/
 import { tripRequestMock } from 'src/app/shared/__mocks__/trip-request.mock';
 import { providerServiceMock } from 'src/app/admin/__services__/__mocks__/providers.mock';
 import { providersMock } from 'src/app/__mocks__/trips-providers.mock';
-import { DisplayTripModalComponent } from '../display-trip-modal/display-trip-modal.component';
 import { TripItineraryComponent } from '../trip-itinerary/trip-itinerary.component';
 
 
@@ -127,15 +126,15 @@ describe('TripAwaitingProviderComponent Unit test', () => {
 
   it('should display trip description modal', () => {
     jest.spyOn(component, 'isActionButton').mockReturnValue(false);
-    jest.spyOn(TripItineraryComponent.prototype, 'viewTripDescription').mockReturnValue();
+    jest.spyOn(TripItineraryComponent.prototype, 'viewRowDescription').mockReturnValue();
     component.viewTripDetails({}, {});
-    expect(TripItineraryComponent.prototype.viewTripDescription).toBeCalled();
+    expect(TripItineraryComponent.prototype.viewRowDescription).toBeCalled();
   });
 
   it('should not display trip description modal', () => {
     jest.spyOn(component, 'isActionButton').mockReturnValue(true);
-    jest.spyOn(TripItineraryComponent.prototype, 'viewTripDescription').mockReturnValue();
+    jest.spyOn(TripItineraryComponent.prototype, 'viewRowDescription').mockReturnValue();
     component.viewTripDetails({}, {});
-    expect(TripItineraryComponent.prototype.viewTripDescription).toHaveBeenCalledTimes(0);
+    expect(TripItineraryComponent.prototype.viewRowDescription).toHaveBeenCalledTimes(0);
   });
 });

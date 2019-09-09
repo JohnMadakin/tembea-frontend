@@ -214,12 +214,6 @@ describe('TripItineraryComponent', () => {
       expect(tripRequestService.getDepartments).toHaveBeenCalled();
     });
   });
-  describe('view Trip Description', () => {
-    it('should show decription of a trip when clicked', () => {
-      component.viewTripDescription(tripInfo);
-      expect(mockMatDialog.open).toBeCalledTimes(1);
-    });
-  });
   describe('Awaiting Provider drivers and cabs Trips', () => {
     it('should get trips awaiting provider drivers and cabs', () => {
       component.tripRequestType = 'awaitingProvider';

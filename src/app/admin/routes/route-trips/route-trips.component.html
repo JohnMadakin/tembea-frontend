@@ -31,7 +31,8 @@
         </mat-grid-tile>
       </mat-grid-list>
 
-      <mat-grid-list *ngFor="let routeTrip of routeTrips" cols="7" rowHeight="4:1" class="table-row-item">
+      <mat-grid-list *ngFor="let routeTrip of routeTrips" cols="7"
+        (click)="viewRowDescription(routeTrip)" rowHeight="4:1" class="table-row-item">
         <mat-grid-tile>
           <div class="time trip-align-cell">
             <span>{{ routeTrip.batchUseDate | date:'dd-MM-yy'}}</span>

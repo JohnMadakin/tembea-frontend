@@ -8,15 +8,19 @@ import { AppPaginationComponent } from '../../layouts/app-pagination/app-paginat
 import { AlertService } from '../../../shared/alert.service';
 import { RouteTripsService } from '../../__services__/route-trips.service';
 import routeTripsResponseMock from './__mocks__/routeTrips.mock';
+import {MatDialog} from '@angular/material';
 
 describe('RouteTripsComponent', () => {
   let component: RouteTripsComponent;
   let fixture: ComponentFixture<RouteTripsComponent>;
 
   const routeTripsMock = {
-    getBatchTripsRecords: () => of(routeTripsResponseMock),
+    getBatchTripsRecords: () => of(routeTripsResponseMock)
   };
 
+  const mockMatDialog = {
+    open: jest.fn(),
+  };
 
   beforeEach(async (() => {
     TestBed.configureTestingModule({
@@ -28,6 +32,7 @@ describe('RouteTripsComponent', () => {
       providers: [
         { provide: AlertService, useValue: alert },
         { provide: RouteTripsService, useValue: routeTripsMock },
+        { provide: MatDialog, useValue: mockMatDialog },
       ],
       imports: [AngularMaterialModule, HttpClientTestingModule]
     })
