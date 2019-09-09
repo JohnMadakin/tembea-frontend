@@ -7,11 +7,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   styleUrls: ['./display-trip-modal.component.scss']
 })
 export class DisplayTripModalComponent {
-  public tripInfo = this.tripData.tripInfo;
-  public closeText = this.tripData.closeText;
+  public rowInfo = this.rowData.rowInfo;
+  public rowType = this.rowData.rowType;
+  public closeText = this.rowData.closeText;
 
   constructor(
     public dialogRef: MatDialogRef<DisplayTripModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public tripData: any
+    @Inject(MAT_DIALOG_DATA) public rowData: any
   ) { }
 }

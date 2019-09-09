@@ -8,9 +8,28 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'; 
 
 import { ConvertNullValue } from '../../__pipes__/convert-nullValue.pipe';
 import { ShortenNamePipe } from '../../__pipes__/shorten-name.pipe';
+import { CustomTitlecasePipe } from '../../__pipes__/custom-titlecase.pipe';
+
 describe('DisplayTripModalComponent', () => {
   let component: DisplayTripModalComponent;
   let fixture: ComponentFixture<DisplayTripModalComponent>;
+  const extraRouteOptions = {
+    route: {
+      name: 'Town Route',
+      imageUrl: 'url to image',
+      destination: {
+        address: ''
+      }
+    },
+    homebase: {
+      name: 'Mombasa',
+      country: {
+        name: 'Kenya'
+      }
+    },
+    riders: []
+  };
+
   const mockMatDialogData = {
     tripInfo: {
       distance: '12 km',
@@ -32,13 +51,15 @@ describe('DisplayTripModalComponent', () => {
       },
       pickup: 'asd',
       destination: 'afsd',
-      department: 'safd'
-    }
+      department: 'safd',
+      ...extraRouteOptions
+    },
+    tripType: 'routes'
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DisplayTripModalComponent, ConvertNullValue, ShortenNamePipe],
+      declarations: [DisplayTripModalComponent, ConvertNullValue, ShortenNamePipe, CustomTitlecasePipe],
       imports: [AppTestModule, AngularMaterialModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA], 
       providers: [
