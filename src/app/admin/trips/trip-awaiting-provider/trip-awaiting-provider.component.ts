@@ -65,12 +65,6 @@ export class TripAwaitingProviderComponent extends TripItineraryComponent implem
     return false;
   }
 
-  viewTripDetails(trip: any, elem) {
-    if (!this.isActionButton(elem)) {
-      super.viewRowDescription(trip);
-    }
-  }
-
   ngOnDestroy() {
     this.updateTripSubscription.unsubscribe();
   }

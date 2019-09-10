@@ -1,7 +1,6 @@
 import { IEditRouteBatch } from './../../../../shared/models/route-inventory.model';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { IRouteBatch } from 'src/app/shared/models/route-inventory.model';
 import { RoutesInventoryService } from 'src/app/admin/__services__/routes-inventory.service';
 import { AlertService } from 'src/app/shared/alert.service';
 import { UpdatePageContentService } from 'src/app/shared/update-page-content.service';

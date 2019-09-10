@@ -2,6 +2,7 @@ import * as moment from 'moment';
 import { DAYS } from '../shared/models/datepicker.model';
 import {IRider} from '../shared/models/rider.model';
 
+
 export const createDialogOptions = (data, width = '512px', _class = 'small-modal-panel-class') => {
   return {
     width, panelClass: _class,
@@ -17,18 +18,37 @@ export const filterDateParameters = (dateFilter) => {
 
 export const formatDate = (day: number, dateFormat = 'DD MMMM, YYYY'): string => moment().day(day).format(dateFormat);
 
-export const getStartAndEndDate = (day = moment().day()): string[] => {
+export const getStartAndEndDate = (currentDate = moment()): string[] => {
   let startDate: string;
   let endDate: string;
-  const { FRIDAY, MONDAY, LAST_FRIDAY, LAST_MONDAY } = DAYS;
-  if (day > FRIDAY) {
-    startDate = formatDate(MONDAY);
-    endDate = formatDate(FRIDAY);
+  const { LAST_WEEK_DAY } = DAYS;
+  const dateValue = moment(currentDate);
+  const day = currentDate.day();
+  if (day > LAST_WEEK_DAY) {
+    startDate = dateValue.clone()
+      .startOf('isoWeek')
+      .format('DD MMMM, YYYY');
+    endDate = dateValue.clone()
+      .endOf('isoWeek')
+      .subtract(2, 'days')
+      .format('DD MMMM, YYYY');
   } else {
-    startDate = formatDate(LAST_MONDAY);
-    endDate = formatDate(LAST_FRIDAY);
+    [startDate, endDate] = getDatesForPreviousWeek(dateValue);
   }
   return [startDate, endDate];
+};
+
+export const getDatesForPreviousWeek = (dateValue: moment.Moment) => {
+  const previousMonday = dateValue.clone()
+    .startOf('isoWeek')
+    .subtract(1, 'weeks')
+    .format('DD MMMM, YYYY');
+  const previousFriday = dateValue.clone()
+    .endOf('isoWeek')
+    .subtract(1, 'weeks')
+    .subtract(2, 'days')
+    .format('DD MMMM, YYYY');
+  return [previousMonday, previousFriday];
 };
 
 export const formatCurrentDate = () => {

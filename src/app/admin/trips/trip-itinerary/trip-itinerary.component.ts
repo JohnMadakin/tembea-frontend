@@ -75,7 +75,7 @@ export class TripItineraryComponent extends BaseTableComponent implements OnInit
       case 'awaitingProvider':
         this.noCab = true;
         this.status = null;
-        this.rowType = null;
+        this.rowType = 'Regular Trip';
         break;
       case 'all':
         this.status = null;
@@ -115,7 +115,6 @@ export class TripItineraryComponent extends BaseTableComponent implements OnInit
     this.loading = true;
     const tripStatus = this.tripRequestType === 'pastTrips' ? null : status;
     const { page, pageSize: size, departmentName: department, dateFilters } = this;
-    console.log('date_filters: ', this.dateFilters);
     this.tripRequestService.query({ page, size, status: tripStatus, department, type: this.rowType, dateFilters, noCab: this.noCab })
       .subscribe(tripData => {
         const { pageInfo, trips } = tripData;

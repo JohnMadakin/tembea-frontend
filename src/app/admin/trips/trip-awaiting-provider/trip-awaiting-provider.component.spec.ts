@@ -123,18 +123,4 @@ describe('TripAwaitingProviderComponent Unit test', () => {
     const actionBtnClicked = component.isActionButton(mockElement);
     expect(actionBtnClicked).toEqual(false);
   });
-
-  it('should display trip description modal', () => {
-    jest.spyOn(component, 'isActionButton').mockReturnValue(false);
-    jest.spyOn(TripItineraryComponent.prototype, 'viewRowDescription').mockReturnValue();
-    component.viewTripDetails({}, {});
-    expect(TripItineraryComponent.prototype.viewRowDescription).toBeCalled();
-  });
-
-  it('should not display trip description modal', () => {
-    jest.spyOn(component, 'isActionButton').mockReturnValue(true);
-    jest.spyOn(TripItineraryComponent.prototype, 'viewRowDescription').mockReturnValue();
-    component.viewTripDetails({}, {});
-    expect(TripItineraryComponent.prototype.viewRowDescription).toHaveBeenCalledTimes(0);
-  });
 });

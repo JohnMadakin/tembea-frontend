@@ -46,6 +46,7 @@ export interface IEditRouteBatch {
   capacity: number;
   batch: string;
   name: string;
+  inUse?: number;
   providerId?: number;
 }
 
